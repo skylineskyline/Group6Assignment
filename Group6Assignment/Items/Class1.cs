@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Group6Assignment
+namespace Group6Assignment.Items
 {
     class Class1
     {
-        //asdasdf
     }
 }
