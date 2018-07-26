@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group6Assignment.Search
 {
-    class test
+    class clsSearchSQL
     {
     }
 }

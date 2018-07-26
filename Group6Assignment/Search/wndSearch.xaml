@@ -1,0 +1,24 @@
+﻿<Window x:Class="JewelryStoreInvoiceSystem.Search.wndSearch"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JewelryStoreInvoiceSystem.Search"
+        mc:Ignorable="d"
+        Title="Search Invoices" Height="298.001" Width="309.332" Closing="Window_Closing">
+
+    <Grid>
+        <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="126" Margin="10,58,0,0" VerticalAlignment="Top" Width="274" Background="White" CanUserAddRows="False">
+        </DataGrid>
+        <Button x:Name="btnSelect" Content="Select" HorizontalAlignment="Left" Margin="10,234,0,0" VerticalAlignment="Top" Width="75" Click="btnSelect_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="210,234,0,0" VerticalAlignment="Top" Width="75" Click="btnCancel_Click"/>
+        <Label x:Name="lblInfo" Content="Please Select an Invoice. You may narrow your &#xD;&#xA;search using the drop-down boxes above." HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="274" Height="40"/>
+        <ComboBox x:Name="cbInvoiceNumber" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="88" SelectionChanged="cbInvoiceNumber_SelectionChanged"/>
+        <Label x:Name="lblInvoiceNumber" Content="Invoice Number" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="Black" Width="88"/>
+        <Label x:Name="lblInvoiceDate" Content="Invoice Date" HorizontalAlignment="Left" Margin="113,10,0,0" VerticalAlignment="Top" Foreground="Black"/>
+        <Label x:Name="lblTotalCharge" Content="Total Charge" HorizontalAlignment="Left" Margin="202,10,0,0" VerticalAlignment="Top" Foreground="Black"/>
+        <ComboBox x:Name="cbInvoiceDate" HorizontalAlignment="Left" Margin="103,31,0,0" VerticalAlignment="Top" Width="88" SelectionChanged="cbInvoiceDate_SelectionChanged"/>
+        <ComboBox x:Name="cbTotalCharge" HorizontalAlignment="Left" Margin="196,31,0,0" VerticalAlignment="Top" Width="88" SelectionChanged="cbTotalCharge_SelectionChanged"/>
+        <Button x:Name="btnClear" Content="Clear Selection" HorizontalAlignment="Left" Margin="103,234,0,0" VerticalAlignment="Top" Width="88" Click="btnClear_Click"/>
+    </Grid>
+</Window>
