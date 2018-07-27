@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Group6Assignment.Main
 {
-    class test
+    class clsMainSQL
     {
     }
 }
