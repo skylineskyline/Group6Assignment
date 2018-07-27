@@ -20,12 +20,11 @@
                 </MenuItem>
             </Menu>
             <TextBox AcceptsReturn="True" />
+
         </DockPanel>
 
-
-
-
-
-
+        <Button Content="New Invoices" Height="50" VerticalAlignment="Top" Margin="100,191,549.556,0"/>
+        <Button Content="Edit Invoices" Height="50" VerticalAlignment="Top" Margin="325,191,324.556,0"/>
+        <Button Content="Delete Invoice" Height="50" VerticalAlignment="Top" Margin="549,191,100.556,0"/>
     </Grid>
 </Window>
