@@ -54,7 +54,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Items\clsItem.cs" />
+    <Compile Include="Items\clsItemsLogic.cs" />
+    <Compile Include="Items\clsItemsSQL.cs" />
+    <Compile Include="Items\wndItems.xaml.cs">
+      <DependentUpon>wndItems.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search\test.cs" />
+    <Page Include="Items\wndItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,7 +74,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\clsDataAccess.cs" />
-    <Compile Include="Items\test.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

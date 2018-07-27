@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Group6Assignment.Items;
+
 namespace Group6Assignment
 {
     /// <summary>
@@ -20,9 +22,23 @@ namespace Group6Assignment
     /// </summary>
     public partial class MainWindow : Window
     {
+        wndItems wndItemsForm;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            wndItemsForm = new wndItems();
+
+            //Hide the main menu
+            this.Hide();
+            //Show the AddPassenger form
+            wndItemsForm.ShowDialog();
+            //Show main menu
+            this.Show();
         }
     }
 }
