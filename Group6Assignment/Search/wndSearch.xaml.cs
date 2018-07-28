@@ -42,6 +42,9 @@ namespace Group6Assignment.Search
         /// </summary>
         private string sCharge = null;
 
+        /// <summary>
+        /// This method will initialize component, AMD update the forms
+        /// </summary>
 
         public wndSearch()
         {
