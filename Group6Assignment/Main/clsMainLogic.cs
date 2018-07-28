@@ -9,6 +9,8 @@ namespace Group6Assignment.Main
     public class clsMainLogic
     {
 
+        private clsMainSQL clsMainSQL;
+
 
         /// <summary>
         /// This method calculates total cost of items user selected.

@@ -19,6 +19,15 @@ namespace Group6Assignment.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        /// <summary>
+        /// Class that manages creating, delete, editing, and calculate Invoice.
+        /// </summary>
+        private clsMainLogic clsMainLogic;
+
+        
+
+
+
         public wndMain()
         {
             InitializeComponent();
