@@ -23,5 +23,61 @@ namespace Group6Assignment.Main
         {
             InitializeComponent();
         }
+
+        
+
+        /// <summary>
+        /// Event handler method for create new invoice.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BcreateInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Event handler method for edit invoice user created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BeditInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Event handler method for delete invoice user created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BdeleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Event handler method for add item user clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BaddItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+
+        /// <summary>
+        /// Event handler method for save item(s) user selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BsaveInvoice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
