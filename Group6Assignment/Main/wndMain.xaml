@@ -1,64 +1,12 @@
-﻿<Window x:Class="Group6Assignment.Main.wndMain"
+﻿<Window x:Class="Group6Assignment.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Group6Assignment.Main"
+        xmlns:local="clr-namespace:Group6Assignment"
         mc:Ignorable="d"
-        Title="G6 Jewelry Store Invoice System" Height="760.715" Width="828.52" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <!-- Menu -->
-        <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="824" Margin="0,0,0,0">
-            <MenuItem Header="Menu">
-                <MenuItem Header="Edit Invoice" />
-
-                <MenuItem Header="Search Invoice" />
-            </MenuItem>
-
-        </Menu>
-
-        <!-- Control buttons( Create(add), Edit, Delete)-->
-        <Button x:Name="BcreateInvoice" Content="Create Invoice" Height="50" VerticalAlignment="Top" Margin="23,145,626.556,0" FontSize="15" Click="BcreateInvoice_Click"/>
-        <Button x:Name="BeditInvoice" Content="Edit Invoice" Height="50" VerticalAlignment="Top" Margin="23,249,626.556,0" FontSize="15" Click="BeditInvoice_Click" IsEnabled="False"/>
-        <Button x:Name="BdeleteInvoice" Content="Delete Invoice" Height="50" VerticalAlignment="Top" Margin="23,348,626.556,0" FontSize="15" Click="BdeleteInvoice_Click" IsEnabled="False"/>
-
-
-        <!-- Title -->
-        <TextBlock HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="824" TextAlignment="Center" FontSize="15" FontWeight="Bold"><Run Text="G6 "/><LineBreak/><Run Text="Jewelry Store Invoice System"/></TextBlock>
-
-        <!-- Invoice Number-->
-        <TextBlock HorizontalAlignment="Left" Margin="236,145,0,0" TextWrapping="Wrap" Text="Invoice Number: " VerticalAlignment="Top" Height="27" Width="115" FontSize="15"/>
-        <TextBlock x:Name="TbInvoiceNumber" HorizontalAlignment="Left" Margin="356,145,0,0" TextWrapping="Wrap" Text="TBD" VerticalAlignment="Top" Height="27" Width="35" FontSize="15"/>
-
-        <!-- Invoice Date-->
-        <TextBlock HorizontalAlignment="Left" Margin="417,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Width="95" FontSize="15"><Run Text="Invoice "/><Run Text="Date"/><Run Text=":"/></TextBlock>
-        <DatePicker x:Name="DpInvoiceInsertDate" Margin="514,138,0,568.778" VerticalAlignment="Center" Width="109" Height="27" RenderTransformOrigin="-0.965,1.063" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" HorizontalAlignment="Left"/>
-
-        <!-- Select Items -->
-        <TextBlock HorizontalAlignment="Left" Margin="236,210,0,0" TextWrapping="Wrap" Text="Items:" VerticalAlignment="Top" Height="27" Width="48" FontSize="15"/>
-        <ComboBox HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385"/>
-
-        <!--Add Item button-->
-        <Button x:Name="BaddItem" Content="Add Item" Height="25" VerticalAlignment="Top" Margin="686,210,18,0" FontSize="15" Click="BaddItem_Click"/>
-
-
-        <!-- DataGrid for selected item-->
-        <DataGrid HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Item Code" Width="100"/>
-                <DataGridTextColumn Header="Item Description" Width="300"/>
-                <DataGridTextColumn Header="Item Cost" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
-
-        <!-- Total Cost -->
-        <TextBlock HorizontalAlignment="Left" Margin="629,630,0,0" TextWrapping="Wrap" Text="Total Cost:" VerticalAlignment="Top" Height="27" Width="78" FontSize="15"/>
-        <TextBlock x:Name="TbTotalCost" HorizontalAlignment="Left" Margin="718,630,0,0" TextWrapping="Wrap" Text="$$$" VerticalAlignment="Top" Height="27" Width="79" FontSize="15"/>
-
-
-        <!-- Save invoice button-->
-        <Button x:Name="BsaveInvoice" Content="Save Invoice" Height="25" VerticalAlignment="Top" Margin="450,675,254,0" FontSize="15" RenderTransformOrigin="1.291,0.72" IsEnabled="False" Click="BsaveInvoice_Click"/>
-
+        
     </Grid>
 </Window>
