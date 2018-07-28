@@ -5,26 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Group6Assignment.Main"
         mc:Ignorable="d"
-        Title="wndMain" Height="450" Width="800">
+        Title="G6 Main" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
-        <DockPanel>
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Update">
-                    <MenuItem Header="_Def table" />
-                    <Separator />
-                    <MenuItem Header="_Exit" />
-                </MenuItem>
 
-                <MenuItem Header="_Search">
-                    <MenuItem Header="_Invoice"></MenuItem>
-                </MenuItem>
-            </Menu>
-            <TextBox AcceptsReturn="True" />
+        <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="796" Margin="0,0,0,0">
+            <MenuItem Header="_Update">
+                <MenuItem Header="_Def table" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
 
-        </DockPanel>
+            <MenuItem Header="_Search">
+                <MenuItem Header="_Invoice"></MenuItem>
+            </MenuItem>
+        </Menu>
+
 
         <Button Content="New Invoices" Height="50" VerticalAlignment="Top" Margin="100,191,549.556,0"/>
         <Button Content="Edit Invoices" Height="50" VerticalAlignment="Top" Margin="325,191,324.556,0"/>
         <Button Content="Delete Invoice" Height="50" VerticalAlignment="Top" Margin="549,191,100.556,0"/>
+
     </Grid>
 </Window>

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Group6Assignment.Main
 {
-    class clsMainLogic
+    public class clsMainLogic
     {
+
     }
 }
