@@ -71,9 +71,7 @@
     </Page>
     <Compile Include="Main\clsMainLogic.cs" />
     <Compile Include="Main\clsMainSQL.cs" />
-    <Compile Include="Main\wndMain.xaml.cs">
-      <DependentUpon>wndMain.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Main\wndMaina.xaml.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,10 +112,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Items\" />
-    <Folder Include="Main\" />
-    <Folder Include="Search\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
