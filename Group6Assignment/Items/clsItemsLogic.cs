@@ -116,7 +116,7 @@ namespace Group6Assignment.Items
         /// When the user adds/edits/deletes an item and clicks "Save" button,
         /// this method updates DataGrid.
         /// </summary>
-        public void UpdateDataGrid()
+        public void UpdateDataGrid(DataGrid dg)
         {
 
         }
