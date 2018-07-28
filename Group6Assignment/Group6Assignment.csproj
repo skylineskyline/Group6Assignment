@@ -59,7 +59,6 @@
     <Compile Include="Main\wndMain.xaml.cs">
       <DependentUpon>wndMain.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Search\test.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,7 +68,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\clsDataAccess.cs" />
-    <Compile Include="Items\test.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -105,6 +103,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Items\" />
+    <Folder Include="Search\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
