@@ -10,6 +10,7 @@ using System.Collections.ObjectModel; //Must be added to use ObservableCollectio
 using System.ComponentModel;          //Must be added for interface INotifyPropertyChanged
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Group6Assignment.Items
 {
@@ -121,12 +122,31 @@ namespace Group6Assignment.Items
         }
 
         /// <summary>
+        /// When a new row is added and an existing row is edited,
+        /// this method will color that row's background color to yellow.
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="sCode"></param>
+        public void ColorRow(DataGrid dg, string sCode)
+        {
+            //clsItem objItem = new clsItem();
+            //var row = dg.ItemContainerGenerator.ContainerFromItem(objItem) as DataGridRow;
+
+            ////SolidColorBrush brush = new SolidColorBrush(Colors.Yellow);
+            //if (objItem.ItemCode == sCode)
+            //{
+            //    //row.Background = brush;
+            //    row.Background = Brushes.Yellow;
+            //}
+        }
+
+        /// <summary>
         /// When the user adds/edits/deletes an item and clicks "Cancel" button,
         /// this method clears data in textbox.
         /// </summary>
-        public void Clear()
+        public void Clear(TextBox txt)
         {
-
+            txt.Text = " ";
         }
 
         /// <summary>

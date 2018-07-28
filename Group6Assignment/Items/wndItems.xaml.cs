@@ -29,7 +29,7 @@ namespace Group6Assignment.Items
         /// <summary>
         /// An object of clsItemsLogic
         /// </summary>
-        clsItemsLogic objItemsLlogic;
+        clsItemsLogic objItemsLogic;
         #endregion
 
         #region Constructor
@@ -115,7 +115,12 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnAddCancel_Click(object sender, RoutedEventArgs e)
         {
+            //TextBox txtContent = (TextBox)sender;
+            //objItemsLogic.Clear(txtContent);
 
+            //objItemsLogic.Clear(txtAddItemCode);
+            //objItemsLogic.Clear(txtAddItemDesc);
+            //objItemsLogic.Clear(txtAddCost);
         }
 
         /// <summary>
