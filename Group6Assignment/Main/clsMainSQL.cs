@@ -14,7 +14,7 @@ namespace Group6Assignment.Main
         /// <returns></returns>
         public string CreateNewInvoice(DateTime date)
         {
-            return "INSERT INTO ItemDesc (InvoiceDate) VALUES (#" + date + "#)";
+            return "INSERT INTO Invoices (InvoiceDate) VALUES (#" + date + "#)";
         }
 
 
