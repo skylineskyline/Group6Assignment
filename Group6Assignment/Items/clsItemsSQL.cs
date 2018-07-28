@@ -1,4 +1,12 @@
-﻿using System;
+﻿/***************************************************************************************************
+* Group5Assignment
+* clsMainLogic.cs
+* Dongmin Kim, Kyle Kippen, Goeun Kwak
+* CS3280 Group assignment - Jewelry Invoice.
+*
+***************************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +34,7 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string SelectAllItemCode()
         {
-            string sSQL = "SELECT ItemCode" +
+            string sSQL = "SELECT DISTINCT ItemCode" +
                           "FROM ItemDesc" +
                           "ORDER BY ItemCode ASC";
             return sSQL;
@@ -54,7 +62,7 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string SelectAllCost()
         {
-            string sSQL = "SELECT Cost" +
+            string sSQL = "SELECT DISTINCT Cost" +
                           "FROM ItemDesc" +
                           "ORDER BY Cost ASC";
             return sSQL;
