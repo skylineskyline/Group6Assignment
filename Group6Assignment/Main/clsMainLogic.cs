@@ -26,7 +26,7 @@ namespace Group6Assignment.Main
         /// </summary>
         public clsMainLogic()
         {
-
+            clsMainSQL = new clsMainSQL();
         }
 
 
@@ -35,8 +35,11 @@ namespace Group6Assignment.Main
         /// </summary>
         public void GetAllItemDesc()
         {
-
+            clsMainSQL.SQLGetAllItemDesc();
         }
+
+
+
 
 
 
@@ -46,6 +49,15 @@ namespace Group6Assignment.Main
         public void AddInvoiceItem(ItemDesc selectedItem)
         {
 
+        }
+
+
+        /// <summary>
+        /// This method calculates total cost of items user added in the grid list.
+        /// </summary>
+        private void CalculateTotal()
+        {
+           
         }
 
 

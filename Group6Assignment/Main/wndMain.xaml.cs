@@ -38,6 +38,8 @@ namespace Group6Assignment.Main
             InitializeComponent();
 
             mainLogic = new clsMainLogic();
+
+            
         }
 
 
@@ -90,7 +92,9 @@ namespace Group6Assignment.Main
         {
             try
             {
-
+                //Load all ItemDesc record for combo box;
+                //var items = mainLogic.GetAllItemDesc();
+                //CinvoiceList.ItemsSource = items;
             }
             catch (Exception)
             {
@@ -207,7 +211,7 @@ namespace Group6Assignment.Main
         /// <summary>
         /// This method updates list of LineItem on the main screen
         /// </summary>
-        public void UpdateMainLineItmes()
+        public void UpdateMainLineItems()
         {
 
         }
