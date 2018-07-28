@@ -24,7 +24,7 @@
 
 
         <!-- Title -->
-        <TextBlock HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="824" TextAlignment="Center" FontSize="15" FontWeight="Bold"><Run Text="G6 "/><LineBreak/><Run Text="Jewelry Store Invoice System"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="824" TextAlignment="Center" FontSize="15" FontWeight="Bold"><Run Text="G"/><Run Text="5"/><Run Text=" "/><LineBreak/><Run Text="Jewelry Store Invoice System"/></TextBlock>
 
         <!-- Invoice Number-->
         <TextBlock HorizontalAlignment="Left" Margin="236,145,0,0" TextWrapping="Wrap" Text="Invoice Number: " VerticalAlignment="Top" Height="27" Width="115" FontSize="15"/>
