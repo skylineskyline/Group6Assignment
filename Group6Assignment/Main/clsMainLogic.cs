@@ -11,7 +11,7 @@ namespace Group6Assignment.Main
 
 
         /// <summary>
-        /// This method calculates total cost user selected.
+        /// This method calculates total cost of items user selected.
         /// </summary>
         public void CalculateTotalItemsCost()
         {
@@ -21,7 +21,7 @@ namespace Group6Assignment.Main
 
 
         /// <summary>
-        /// This method saves Invoice items user input.
+        /// This method edits Invoice items user input.
         /// </summary>
         public void EditInvoice()
         {
@@ -36,5 +36,15 @@ namespace Group6Assignment.Main
         {
 
         }
+
+
+        /// <summary>
+        /// This method saves Invoice items user selected.
+        /// </summary>
+        public void SaveInvoice()
+        {
+
+        }
+
     }
 }
