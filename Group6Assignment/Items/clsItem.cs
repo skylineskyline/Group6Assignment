@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************************
 * Group5Assignment
-* clsMainLogic.cs
+* clsItem.cs
 * Dongmin Kim, Kyle Kippen, Goeun Kwak
 * CS3280 Group assignment - Jewelry Invoice.
 *
