@@ -1,4 +1,13 @@
-﻿using System;
+﻿/***************************************************************************************************
+* Group5Assignment
+* clsSearchLogic.cs
+* Dongmin Kim, Kyle Kippen, Goeun Kwak
+* CS3280 Group assignment - Jewelry Invoice.
+*
+***************************************************************************************************/
+
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;

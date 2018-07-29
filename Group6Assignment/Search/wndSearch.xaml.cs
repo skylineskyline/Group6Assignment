@@ -1,4 +1,12 @@
-﻿using System;
+﻿/***************************************************************************************************
+* Group5Assignment
+* wndSearch.cs
+* Dongmin Kim, Kyle Kippen, Goeun Kwak
+* CS3280 Group assignment - Jewelry Invoice.
+*
+***************************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
