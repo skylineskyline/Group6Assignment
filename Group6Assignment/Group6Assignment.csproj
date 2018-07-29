@@ -59,9 +59,6 @@
     </Compile>
     <Compile Include="Search\clsSearchLogic.cs" />
     <Compile Include="Search\clsSearchSQL.cs" />
-    <Compile Include="Search\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Search\wndSearch.xaml.cs">
       <DependentUpon>wndSearch.xaml</DependentUpon>
     </Compile>
@@ -86,7 +83,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Search\Window1.xaml">
+    <Page Include="Search\wndSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

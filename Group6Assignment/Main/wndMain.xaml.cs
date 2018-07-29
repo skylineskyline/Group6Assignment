@@ -35,7 +35,16 @@ namespace Group6Assignment.Main
         /// </summary>
         private clsMainLogic mainLogic;
 
+        
+        /// <summary>
+        /// Variable to open Items window.
+        /// </summary>
+        private Items.wndItems openItems;
 
+        /// <summary>
+        /// Variable to open search window.
+        /// </summary>
+        private Search.wndSearch openSearch;
 
 
         /// <summary>
@@ -46,8 +55,10 @@ namespace Group6Assignment.Main
             InitializeComponent();
 
             mainLogic = new clsMainLogic();
+            openItems = new Items.wndItems();
+            openSearch = new Search.wndSearch();
 
-            
+
         }
 
 
@@ -60,7 +71,8 @@ namespace Group6Assignment.Main
         {
             try
             {
-
+                this.Hide();
+                openItems.ShowDialog();
             }
             catch (Exception)
             {
@@ -75,11 +87,13 @@ namespace Group6Assignment.Main
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        /// 
         private void MsearchInvoice_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
+                this.Hide();
+                openSearch.ShowDialog();
             }
             catch (Exception)
             {

@@ -56,7 +56,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void UpdateForm()
         {
-         
+
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-         
+
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Group6Assignment.Search
         /// <returns></returns>
         public int getInvoiceNumber()
         {
-           
+
             return 0;
         }
 
@@ -84,7 +84,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateNumberCB()
         {
-           
+
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateDateCB()
         {
-          
+
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateTotalChargeCB()
         {
-         
+
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void UpdateDataGrid()
         {
-          
+
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateDataGrid()
         {
-         
+
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private void UpdateComboBoxes()
         {
-          
+
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void cbInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void cbInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-          
+
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void cbTotalCharge_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
+
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-          
+
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-           
+
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-          
+
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Group6Assignment.Search
         /// <param name="sMessage"></param>
         private void HandleError(string sClass, string sMethod, string sMessage)
         {
-          
+
         }
 
     }// end wndSearch
