@@ -6,6 +6,7 @@
 *
 ***************************************************************************************************/
 
+using Group6Assignment.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,10 @@ namespace Group6Assignment.Items
         /// An object of clsItemsLogic
         /// </summary>
         clsItemsLogic objItemsLogic;
+
+
+
+
         #endregion
 
         #region Constructor
@@ -189,30 +194,24 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnItemCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+           
+            this.Close();
+            
         }
+
+
+
 
         /// <summary>
         /// It will be triggered when the Items window is closed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ItemsWindow_Closed(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        /// <summary>
-        /// This method is activated when user clicks window close 'X' button on the top right.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.Hide();
-            e.Cancel = true;
+            var window = new wndMain();
+            window.Show();
+           
         }
 
         #endregion
