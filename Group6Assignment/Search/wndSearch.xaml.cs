@@ -181,7 +181,7 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Hide();
         }
 
         /// <summary>
@@ -191,7 +191,8 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            this.Hide();
+            e.Cancel = true;
         }
 
         /// <summary>
@@ -204,6 +205,7 @@ namespace Group6Assignment.Search
         {
 
         }
+        
 
     }// end wndSearch
 }
