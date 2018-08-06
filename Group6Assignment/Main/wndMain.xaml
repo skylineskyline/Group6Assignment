@@ -8,11 +8,11 @@
         Title="G6 Jewelry Store Invoice System" Height="760.715" Width="828.52" WindowStartupLocation="CenterScreen">
     <Grid>
         <!-- Menu -->
-        <Menu HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="824" Margin="0,0,0,0">
-            <MenuItem Header="Menu">
-                <MenuItem Header="Edit Invoice" />
+        <Menu HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="824" Margin="0,0,0,0">
+            <MenuItem Header="Menu" Height="24" Width="58">
+                <MenuItem x:Name="MeditInvoice" Header="Edit Invoice" Click="MeditInvoice_Click" />
 
-                <MenuItem Header="Search Invoice" />
+                <MenuItem x:Name="MsearchInvoice" Header="Search Invoice" Click="MsearchInvoice_Click" />
             </MenuItem>
 
         </Menu>
@@ -24,7 +24,7 @@
 
 
         <!-- Title -->
-        <TextBlock HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="824" TextAlignment="Center" FontSize="15" FontWeight="Bold"><Run Text="G6 "/><LineBreak/><Run Text="Jewelry Store Invoice System"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="824" TextAlignment="Center" FontSize="15" FontWeight="Bold"><Run Text="G"/><Run Text="5"/><Run Text=" "/><LineBreak/><Run Text="Jewelry Store Invoice System"/></TextBlock>
 
         <!-- Invoice Number-->
         <TextBlock HorizontalAlignment="Left" Margin="236,145,0,0" TextWrapping="Wrap" Text="Invoice Number: " VerticalAlignment="Top" Height="27" Width="115" FontSize="15"/>
@@ -32,11 +32,11 @@
 
         <!-- Invoice Date-->
         <TextBlock HorizontalAlignment="Left" Margin="417,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Width="95" FontSize="15"><Run Text="Invoice "/><Run Text="Date"/><Run Text=":"/></TextBlock>
-        <DatePicker x:Name="DpInvoiceInsertDate" Margin="514,138,0,568.778" VerticalAlignment="Center" Width="109" Height="27" RenderTransformOrigin="-0.965,1.063" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" HorizontalAlignment="Left"/>
+        <DatePicker x:Name="DpInvoiceInsertDate" Margin="514,148,0,558.778" VerticalAlignment="Center" Width="109" Height="27" RenderTransformOrigin="-0.965,1.063" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" HorizontalAlignment="Left"/>
 
         <!-- Select Items -->
         <TextBlock HorizontalAlignment="Left" Margin="236,210,0,0" TextWrapping="Wrap" Text="Items:" VerticalAlignment="Top" Height="27" Width="48" FontSize="15"/>
-        <ComboBox HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385"/>
+        <ComboBox x:Name="CinvoiceList" HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385" SelectionChanged="CinvoiceList_SelectionChanged"/>
 
         <!--Add Item button-->
         <Button x:Name="BaddItem" Content="Add Item" Height="25" VerticalAlignment="Top" Margin="686,210,18,0" FontSize="15" Click="BaddItem_Click"/>
@@ -54,7 +54,7 @@
 
         <!-- Total Cost -->
         <TextBlock HorizontalAlignment="Left" Margin="629,630,0,0" TextWrapping="Wrap" Text="Total Cost:" VerticalAlignment="Top" Height="27" Width="78" FontSize="15"/>
-        <TextBlock x:Name="TbTotalCost" HorizontalAlignment="Left" Margin="718,630,0,0" TextWrapping="Wrap" Text="$$$" VerticalAlignment="Top" Height="27" Width="79" FontSize="15"/>
+        <TextBlock x:Name="TbTotalCost" HorizontalAlignment="Left" Margin="718,630,0,0" TextWrapping="Wrap" Text="$0.00" VerticalAlignment="Top" Height="27" Width="79" FontSize="15"/>
 
 
         <!-- Save invoice button-->
