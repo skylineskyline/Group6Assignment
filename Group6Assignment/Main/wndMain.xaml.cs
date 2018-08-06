@@ -55,7 +55,7 @@ namespace Group6Assignment.Main
         public wndMain()
         {
             InitializeComponent();
-            this.Closing += OnClosing;
+            this.Closing += ClosingWindowForm;
 
             mainLogic = new clsMainLogic();
             openItems = new Items.wndItems();
@@ -249,11 +249,11 @@ namespace Group6Assignment.Main
 
 
         /// <summary>
-        /// This event handler runs when the user is trying to close the window.  If the window is in edit mode, they're prompted before closing.
+        /// This event handler runs closing the window. 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClosing(object sender, CancelEventArgs e)
+        private void ClosingWindowForm(object sender, CancelEventArgs e)
         {
             try
             {               
