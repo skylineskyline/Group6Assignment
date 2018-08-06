@@ -22,6 +22,8 @@ using System.Windows.Shapes;
 using Group6Assignment.Main;
 using System.Reflection;
 using System.ComponentModel;
+using Group6Assignment.Items;
+using Group6Assignment.Search;
 
 namespace Group6Assignment.Main
 {
@@ -53,6 +55,7 @@ namespace Group6Assignment.Main
         public wndMain()
         {
             InitializeComponent();
+            this.Closing += OnClosing;
 
             mainLogic = new clsMainLogic();
             openItems = new Items.wndItems();
@@ -71,9 +74,9 @@ namespace Group6Assignment.Main
         {
             try
             {
-                this.Hide();
-                openItems.ShowDialog();
-                this.Show();
+                var windowItem = new wndItems();
+                windowItem.Show();
+                this.Close();
             }
             catch (Exception)
             {
@@ -93,9 +96,9 @@ namespace Group6Assignment.Main
         {
             try
             {
-                this.Hide();
-                openSearch.ShowDialog();
-                this.Show();
+                var windowSearch = new wndSearch();
+                openSearch.Show();
+                this.Close();
             }
             catch (Exception)
             {
@@ -242,6 +245,39 @@ namespace Group6Assignment.Main
 
 
 
+        
+
+
+        /// <summary>
+        /// This event handler runs when the user is trying to close the window.  If the window is in edit mode, they're prompted before closing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            try
+            {               
+                    //e.Cancel = true;              
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// This method exits program.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+
+
         /// <summary>
         /// Handle the error.
         /// </summary>
@@ -260,6 +296,5 @@ namespace Group6Assignment.Main
                                              "HandleError Exception: " + ex.Message);
             }
         }
-
     }
 }

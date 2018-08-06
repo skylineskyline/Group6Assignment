@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Group6Assignment.Main"
+        xmlns:local="clr-namespace:Group6Assignment.Main"        
         mc:Ignorable="d"
-        Title="G6 Jewelry Store Invoice System" Height="760.715" Width="828.52" WindowStartupLocation="CenterScreen">
+        Title="G5 Jewelry Store Invoice System" Height="760.715" Width="828.52" WindowStartupLocation="CenterScreen">
     <Grid>
         <!-- Menu -->
         <Menu HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="824" Margin="0,0,0,0">
@@ -13,6 +13,8 @@
                 <MenuItem x:Name="MeditInvoice" Header="Edit Invoice" Click="MeditInvoice_Click" />
 
                 <MenuItem x:Name="MsearchInvoice" Header="Search Invoice" Click="MsearchInvoice_Click" />
+                <Separator />
+                <MenuItem Header="_Exit" Click="MenuItem_Click"/>
             </MenuItem>
 
         </Menu>
