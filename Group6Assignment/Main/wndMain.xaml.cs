@@ -73,6 +73,7 @@ namespace Group6Assignment.Main
             {
                 this.Hide();
                 openItems.ShowDialog();
+                this.Show();
             }
             catch (Exception)
             {
@@ -94,6 +95,7 @@ namespace Group6Assignment.Main
             {
                 this.Hide();
                 openSearch.ShowDialog();
+                this.Show();
             }
             catch (Exception)
             {
