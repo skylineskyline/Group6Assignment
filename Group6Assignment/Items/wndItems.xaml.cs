@@ -189,7 +189,7 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnItemCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Hide();
         }
 
         /// <summary>
@@ -201,6 +201,20 @@ namespace Group6Assignment.Items
         {
 
         }
+
+
+
+        /// <summary>
+        /// This method is activated when user clicks window close 'X' button on the top right.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+        }
+
         #endregion
     }
 }
