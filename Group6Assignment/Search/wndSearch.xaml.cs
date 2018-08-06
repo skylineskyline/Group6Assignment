@@ -21,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
+using Group6Assignment.Main;
 
 namespace Group6Assignment.Search
 {
@@ -181,19 +182,21 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
+
         /// <summary>
-        /// This method hides the window instead of closing it down when the X is pressed
+        /// This method closes window.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.Hide();
-            e.Cancel = true;
+            var window = new wndMain();
+            window.Show();
         }
+
 
         /// <summary>
         /// This method handles the top level exceptions
