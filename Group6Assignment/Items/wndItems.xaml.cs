@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using System.Collections.ObjectModel; //Must be added to use ObservableCollection
+using System.ComponentModel;          //Must be added for interface INotifyPropertyChanged
+using System.Reflection; //For exception handling
 
 namespace Group6Assignment.Items
 {
@@ -40,19 +43,24 @@ namespace Group6Assignment.Items
         public wndItems()
         {
             InitializeComponent();
+
+            objItemsLogic = new clsItemsLogic();
         }
         #endregion
 
         #region Event handler
-        ///// <summary>
-        ///// Called when the form is loaded.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void wndItemsBinding_Loaded(object sender, RoutedEventArgs e)
-        //{
-
-        //}
+        private void wndItemsBinding_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
 
         /// <summary>
         /// If this AddItem button is clicked, it will check if that item already exists or not.
@@ -64,7 +72,15 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
-            //gAdd.Visibility = Visibility.Visible;
+            try
+            {
+                gAdd.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -76,8 +92,16 @@ namespace Group6Assignment.Items
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnEditItem_Click(object sender, RoutedEventArgs e)
-        {
-            //gEdit.Visibility = Visibility.Visible;
+        {          
+            try
+            {
+                //gEdit.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -89,8 +113,16 @@ namespace Group6Assignment.Items
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
-        {
-            //gDelete.Visibility = Visibility.Visible;
+        {           
+            try
+            {
+                //gDelete.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -102,7 +134,16 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -114,13 +155,21 @@ namespace Group6Assignment.Items
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnAddCancel_Click(object sender, RoutedEventArgs e)
-        {
-            //TextBox txtContent = (TextBox)sender;
-            //objItemsLogic.Clear(txtContent);
+        {            
+            try
+            {
+                //TextBox txtContent = (TextBox)sender;
+                //objItemsLogic.Clear(txtContent);
 
-            //objItemsLogic.Clear(txtAddItemCode);
-            //objItemsLogic.Clear(txtAddItemDesc);
-            //objItemsLogic.Clear(txtAddCost);
+                //objItemsLogic.Clear(txtAddItemCode);
+                //objItemsLogic.Clear(txtAddItemDesc);
+                //objItemsLogic.Clear(txtAddCost);
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -132,7 +181,15 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnEditSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -145,7 +202,15 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnEditCancel_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -157,7 +222,15 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnDeleteSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -170,7 +243,15 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnDeleteCancel_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -181,7 +262,15 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnItemCancel_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -191,7 +280,35 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void ItemsWindow_Closed(object sender, EventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Exception Handler
+        /// <summary>
+        /// Handles the error
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
         }
         #endregion
     }

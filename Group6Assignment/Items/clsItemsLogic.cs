@@ -21,14 +21,11 @@ namespace Group6Assignment.Items
         /// A class which connects to the clsDataAccess class
         /// </summary>
         clsDataAccess db;
-        /// <summary>
-        /// DataSet type
-        /// </summary>
-        DataSet ds;
+
         /// <summary>
         /// A SQL class for Items(ItemDesc Table)
         /// </summary>
-        clsItemsSQL SQL_Items;
+        clsItemsSQL objItemsSQL;
         #endregion
 
         #region Constructor
@@ -37,9 +34,8 @@ namespace Group6Assignment.Items
         /// </summary>
         public clsItemsLogic()
         {
-            db = new clsDataAccess();
-            ds = new DataSet();
-            SQL_Items = new clsItemsSQL();
+            db = new clsDataAccess();            
+            objItemsSQL = new clsItemsSQL();
         }
         #endregion
 
@@ -52,11 +48,34 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public ObservableCollection<clsItem> GetItemCollection()
         {
-            ObservableCollection<clsItem> itemCltn = new ObservableCollection<clsItem>();
+            ObservableCollection<clsItem> items = new ObservableCollection<clsItem>();
 
-            
-    
-            return itemCltn;
+            try
+            {
+                int iRet = 0;
+                DataSet ds = new DataSet();
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItems(), ref iRet);
+
+                //for(int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                for (int i = 0; i < iRet; i++)
+                {
+                    //Fill out attributes for each item object
+                    clsItem objItem = new clsItem();
+                    objItem.ItemCode = ds.Tables[0].Rows[i][0].ToString();
+                    objItem.ItemDesc = ds.Tables[0].Rows[i][1].ToString();
+                    objItem.Cost = Convert.ToDecimal(ds.Tables[0].Rows[i][2].ToString());
+
+                    //Add an item object to an ObservableCollection<clsItem>
+                    items.Add(objItem);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+
+            return items;
         }
         #endregion
 
@@ -69,11 +88,28 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public List<String> GetItemCodeList()
         {
-            List<String> itemCodeList = new List<String>();
+            try
+            {
+                List<string> itemCodeList = new List<string>();
 
+                DataSet ds = new DataSet();
+                int iRet = 0;
 
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItemCode(), ref iRet);
+                for (int i = 0; i < iRet; i++)
+                {
+                    string sItemCode = ds.Tables[0].Rows[i][0].ToString();
 
-            return itemCodeList;
+                    itemCodeList.Add(sItemCode);
+                }
+
+                return itemCodeList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
         #endregion
 
@@ -85,9 +121,31 @@ namespace Group6Assignment.Items
         /// <param name="sCode"></param>
         /// <param name="sDesc"></param>
         /// <param name="dCost"></param>
-        public void AddItem_byRow(string sCode, string sDesc, decimal dCost)
+        public void AddItem_byRow(string itemCode, string itemDesc, decimal cost)
         {
+            try
+            {
+                List<string> existingCode = GetItemCodeList();
 
+                int count = 0;
+                foreach (string pk in existingCode)
+                {
+                    if (itemCode == pk)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 0)
+                {
+                    db.ExecuteNonQuery(objItemsSQL.AddItem(itemCode, itemDesc, cost));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -100,7 +158,15 @@ namespace Group6Assignment.Items
         /// <param name="dCost"></param>
         public void EditItem(string sCode, string sDesc, decimal dCost)
         {
+            try
+            {
 
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -109,7 +175,15 @@ namespace Group6Assignment.Items
         /// <param name="sCode"></param>
         public void DeleteItem_byRow(string sCode)
         {
+            try
+            {
 
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -118,7 +192,15 @@ namespace Group6Assignment.Items
         /// </summary>
         public void UpdateDataGrid()
         {
+            try
+            {
 
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -128,16 +210,24 @@ namespace Group6Assignment.Items
         /// <param name="dg"></param>
         /// <param name="sCode"></param>
         public void ColorRow(DataGrid dg, string sCode)
-        {
-            //clsItem objItem = new clsItem();
-            //var row = dg.ItemContainerGenerator.ContainerFromItem(objItem) as DataGridRow;
+        {          
+            try
+            {
+                //clsItem objItem = new clsItem();
+                //var row = dg.ItemContainerGenerator.ContainerFromItem(objItem) as DataGridRow;
 
-            ////SolidColorBrush brush = new SolidColorBrush(Colors.Yellow);
-            //if (objItem.ItemCode == sCode)
-            //{
-            //    //row.Background = brush;
-            //    row.Background = Brushes.Yellow;
-            //}
+                ////SolidColorBrush brush = new SolidColorBrush(Colors.Yellow);
+                //if (objItem.ItemCode == sCode)
+                //{
+                //    //row.Background = brush;
+                //    row.Background = Brushes.Yellow;
+                //}
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -147,6 +237,15 @@ namespace Group6Assignment.Items
         public void Clear(TextBox txt)
         {
             txt.Text = " ";
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -156,8 +255,16 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         public void EnableButton(object sender, RoutedEventArgs e)
         {
-            Button btn = (Button)sender;
-            btn.IsEnabled = true; ;
+            try
+            {
+                Button btn = (Button)sender;
+                btn.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -167,8 +274,16 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         public void DisableButton(object sender, RoutedEventArgs e)
         {
-            Button btn = (Button)sender;
-            btn.IsEnabled = false;
+            try
+            {
+                Button btn = (Button)sender;
+                btn.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         //public void Visible()
@@ -186,9 +301,37 @@ namespace Group6Assignment.Items
         /// <param name="sInput"></param>
         /// <returns></returns>
         public bool ValidateInput(string sInput)
+        {          
+            try
+            {
+                bool bValid = false;
+                return bValid;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+        }
+        #endregion
+
+        #region Exception Handler
+        /// <summary>
+        /// Handles the error
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
         {
-            bool bValid = false;
-            return bValid;
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
         }
         #endregion
     }

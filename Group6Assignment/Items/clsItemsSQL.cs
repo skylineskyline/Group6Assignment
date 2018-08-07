@@ -14,8 +14,8 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string SelectAllItems()
         {
-            string sSQL = "SELECT *" +
-                          "FROM ItemDesc" +
+            string sSQL = "SELECT ItemCode, ItemDesc, Cost " +
+                          "FROM ItemDesc " +
                           "ORDER BY ItemCode ASC";
             return sSQL;
         }
@@ -26,8 +26,8 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string SelectAllItemCode()
         {
-            string sSQL = "SELECT ItemCode" +
-                          "FROM ItemDesc" +
+            string sSQL = "SELECT ItemCode " +
+                          "FROM ItemDesc " +
                           "ORDER BY ItemCode ASC";
             return sSQL;
         }
@@ -40,9 +40,9 @@ namespace Group6Assignment.Items
         public string SelectAllSearchedItemDesc(string sUserInput)
         {
             string sSQL = String.Format(
-                          "SELECT ItemDesc" +
-                          "FROM ItemDesc" +
-                          "WHERE ItemDesc LIKE {0}" +
+                          "SELECT ItemDesc " +
+                          "FROM ItemDesc " +
+                          "WHERE ItemDesc LIKE {0} " +
                           "ORDER BY ItemCode"
                           , sUserInput);
             return sSQL;
@@ -54,8 +54,8 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string SelectAllCost()
         {
-            string sSQL = "SELECT Cost" +
-                          "FROM ItemDesc" +
+            string sSQL = "SELECT Cost " +
+                          "FROM ItemDesc " +
                           "ORDER BY Cost ASC";
             return sSQL;
         }
@@ -68,8 +68,8 @@ namespace Group6Assignment.Items
         public string SelectItemBy_ItemCode(string sItemCode)
         {
             string sSQL = String.Format(
-                          "SELECT ItemCode, ItemDesc, Cost" +
-                          "FROM ItemDesc" +
+                          "SELECT ItemCode, ItemDesc, Cost " +
+                          "FROM ItemDesc " +
                           "WHERE ItemCode = {0}"
                           , sItemCode);
             return sSQL;
@@ -83,9 +83,9 @@ namespace Group6Assignment.Items
         public string SelectItemBy_ItemDesc(string sItemDesc)
         {
             string sSQL = String.Format(
-                        "SELECT ItemCode, ItemDesc, Cost" +
-                        "FROM ItemDesc" +
-                        "WHERE ItemDesc LIKE {0}" +
+                        "SELECT ItemCode, ItemDesc, Cost " +
+                        "FROM ItemDesc " +
+                        "WHERE ItemDesc LIKE {0} " +
                         "ORDER BY ItemCode ASC"
                         , sItemDesc);
             return sSQL;
@@ -98,10 +98,10 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string SelectItemBy_Cost(decimal dCost)
         {
-            string sSQL = "SELECT ItemCode, ItemDesc, Cost" +
-                        "FROM ItemDesc" +
+            string sSQL = "SELECT ItemCode, ItemDesc, Cost " +
+                        "FROM ItemDesc " +
                         "WHERE Cost = " + dCost +
-                        "ORDER BY ItemCode ASC";
+                        " ORDER BY ItemCode ASC";
             return sSQL;
         }
 
@@ -115,8 +115,8 @@ namespace Group6Assignment.Items
         public string AddItem(string sItemCode, string sItemDesc, decimal dCost)
         {
             string sSQL = String.Format(
-                        "INSERT INTO ItemDesc (ItemCode, ItemDesc, Cost)" +
-                        "VALUES ({0}, {1}, {2})",
+                        "INSERT INTO ItemDesc (ItemCode, ItemDesc, Cost) " +
+                        "VALUES ('{0}', '{1}', {2})",
                         sItemCode, sItemDesc, dCost);
             return sSQL;
         }
@@ -132,9 +132,9 @@ namespace Group6Assignment.Items
         public string EditItem(string sItemCode, string sItemDesc, decimal dCost)
         {
             string sSQL = String.Format(
-                        "UPDATE ItemDesc" +
-                        "SET ItemDesc = {1}, Cost = {2}" +
-                        "WHERE ItemCode = {0}",
+                        "UPDATE ItemDesc " +
+                        "SET ItemDesc = '{1}', Cost = {2} " +
+                        "WHERE ItemCode = '{0}'",
                         sItemCode, sItemDesc, dCost);
             return sSQL;
         }
@@ -147,8 +147,8 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public string DeleteItem(string sItemCode)
         {
-            string sSQL = "DELETE FROM ItemDesc" +
-                        "WHERE ItemCode = " + sItemCode;
+            string sSQL = "DELETE FROM ItemDesc " +
+                        "WHERE ItemCode = " + "'" +sItemCode + "'";
             return sSQL;
         }
     }
