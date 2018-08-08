@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Group6Assignment.Items"        
-        mc:Ignorable="d"        
-        Title="wndItems" Height="540" Width="620" Closing="Window_Closing">
-    <!--Loaded="wndItemsBinding_Loaded"-->
+        xmlns:local="clr-namespace:Group6Assignment.Items"
+        mc:Ignorable="d"
+        Title="wndItems" Height="540" Width="620" Loaded="wndItemsBinding_Loaded"> <!--Closed="ItemsWindow_Closed"--> 
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -14,11 +14,12 @@
         </Grid.RowDefinitions>
 
 
-        <DataGrid x:Name="dgItemDescTable" AutoGenerateColumns="False" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Height="230" Width="580">
+        <DataGrid x:Name="dgItemDescTable" AutoGenerateColumns="False" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Height="230" Width="580" 
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <DataGrid.Columns>
-
-
-
+                <DataGridTextColumn Header="ItemCode" Binding="{Binding Path=ItemCode}"></DataGridTextColumn>
+                <DataGridTextColumn Header="ItemDescription" Binding="{Binding Path=ItemDesc}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Cost" Binding="{Binding Path=Cost}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
