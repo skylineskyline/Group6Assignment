@@ -164,11 +164,25 @@ namespace Group6Assignment.Items
         /// <param name="sCode"></param>
         /// <param name="sDesc"></param>
         /// <param name="dCost"></param>
-        public void EditItem(string sCode, string sDesc, decimal dCost)
+        public void EditItem(string itemCode, string itemDesc, decimal cost)
         {
             try
             {
+                List<string> existingCode = GetItemCodeList();
 
+                int count = 0;
+                foreach (string pk in existingCode)
+                {
+                    if (itemCode == pk)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count != 0)
+                {
+                    db.ExecuteNonQuery(objItemsSQL.EditItem(itemCode, itemDesc, cost));
+                }
             }
             catch (Exception e)
             {
@@ -181,11 +195,25 @@ namespace Group6Assignment.Items
         /// A method to delete an item by row.
         /// </summary>
         /// <param name="sCode"></param>
-        public void DeleteItem_byRow(string sCode)
+        public void DeleteItem_byRow(string itemCode)
         {
             try
             {
+                List<string> existingCode = GetItemCodeList();
 
+                int count = 0;
+                foreach (string pk in existingCode)
+                {
+                    if (itemCode == pk)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count != 0)
+                {
+                    db.ExecuteNonQuery(objItemsSQL.DeleteItem(itemCode));
+                }
             }
             catch (Exception e)
             {
@@ -217,7 +245,7 @@ namespace Group6Assignment.Items
         /// </summary>
         /// <param name="dg"></param>
         /// <param name="sCode"></param>
-        public void ColorRow(DataGrid dg, string sCode)
+        public void ColorRow(DataGrid dg, string pkCode)
         {
             try
             {
@@ -225,7 +253,7 @@ namespace Group6Assignment.Items
                 //var row = dg.ItemContainerGenerator.ContainerFromItem(objItem) as DataGridRow;
 
                 ////SolidColorBrush brush = new SolidColorBrush(Colors.Yellow);
-                //if (objItem.ItemCode == sCode)
+                //if (objItem.ItemCode == pkCode)
                 //{
                 //    //row.Background = brush;
                 //    row.Background = Brushes.Yellow;
@@ -237,71 +265,6 @@ namespace Group6Assignment.Items
                                     MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
         }
-
-        /// <summary>
-        /// When the user adds/edits/deletes an item and clicks "Cancel" button,
-        /// this method clears data in textbox.
-        /// </summary>
-        public void Clear(TextBox txt)
-        {
-            txt.Text = " ";
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-            }
-        }
-
-        /// <summary>
-        /// Enable a button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void EnableButton(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Button btn = (Button)sender;
-                btn.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Disable a button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void DisableButton(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Button btn = (Button)sender;
-                btn.IsEnabled = false;
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-        //public void Visible()
-        //{
-
-        //}
-        //public void Hidden()
-        //{
-
-        //}
 
         /// <summary>
         /// Validate user input in a textbox.
@@ -321,6 +284,71 @@ namespace Group6Assignment.Items
                                     MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
         }
+
+        ///// <summary>
+        ///// When the user adds/edits/deletes an item and clicks "Cancel" button,
+        ///// this method clears data in textbox.
+        ///// </summary>
+        //public void Clear(TextBox txt)
+        //{          
+        //    try
+        //    {
+        //        txt.Text = "";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Enable a button.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //public void EnableButton(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Button btn = (Button)sender;
+        //        btn.IsEnabled = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Disable a button.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //public void DisableButton(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Button btn = (Button)sender;
+        //        btn.IsEnabled = false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
+
+        //public void Visible()
+        //{
+
+        //}
+        //public void Hidden()
+        //{
+
+        //}
+
         #endregion
 
         #region Exception Handler

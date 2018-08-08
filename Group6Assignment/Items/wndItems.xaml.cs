@@ -23,6 +23,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel; //Must be added to use ObservableCollection
 using System.ComponentModel;          //Must be added for interface INotifyPropertyChanged
 using System.Reflection; //For exception handling
+using Group6Assignment.Main;
 
 namespace Group6Assignment.Items
 {
@@ -83,6 +84,8 @@ namespace Group6Assignment.Items
             try
             {
                 gAdd.Visibility = Visibility.Visible;
+                gEdit.Visibility = Visibility.Collapsed;
+                gDelete.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -103,7 +106,9 @@ namespace Group6Assignment.Items
         {
             try
             {
-                //gEdit.Visibility = Visibility.Visible;
+                gAdd.Visibility = Visibility.Collapsed;
+                gEdit.Visibility = Visibility.Visible;
+                gDelete.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -124,7 +129,9 @@ namespace Group6Assignment.Items
         {
             try
             {
-                //gDelete.Visibility = Visibility.Visible;
+                gAdd.Visibility = Visibility.Collapsed;
+                gEdit.Visibility = Visibility.Collapsed;
+                gDelete.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
@@ -146,6 +153,10 @@ namespace Group6Assignment.Items
             {
                 objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+                //objItemsLogic.ColorRow(dgItemDescTable, txtAddItemCode.Text);
+
+                RefreshAdd();
+                gAdd.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -172,6 +183,9 @@ namespace Group6Assignment.Items
                 //objItemsLogic.Clear(txtAddItemCode);
                 //objItemsLogic.Clear(txtAddItemDesc);
                 //objItemsLogic.Clear(txtAddCost);
+
+                RefreshAdd();
+                gAdd.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -191,7 +205,11 @@ namespace Group6Assignment.Items
         {
             try
             {
+                objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
 
+                RefreshEdit();
+                gEdit.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -212,7 +230,8 @@ namespace Group6Assignment.Items
         {
             try
             {
-
+                RefreshEdit();
+                gEdit.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -232,7 +251,11 @@ namespace Group6Assignment.Items
         {
             try
             {
+                objItemsLogic.DeleteItem_byRow(txtDeleteItemCode.Text);
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
 
+                RefreshDelete();
+                gDelete.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -253,7 +276,8 @@ namespace Group6Assignment.Items
         {
             try
             {
-
+                RefreshDelete();
+                gDelete.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -272,7 +296,7 @@ namespace Group6Assignment.Items
         {
             try
             {
-
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -281,34 +305,82 @@ namespace Group6Assignment.Items
             }
         }
 
-        ///// <summary>
-        ///// It will be triggered when the Items window is closed.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void ItemsWindow_Closed(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
-        //    }
-        //}
-
-
         /// <summary>
         /// It will be triggered when the Items window is closed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ItemsWindow_Closed(object sender, EventArgs e)
         {
-            var window = new Main.wndMain();
-            window.Show();
+            try
+            {
+                var window = new wndMain();
+                window.Show();
+
+                //this.Close();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+
+        ///// <summary>
+        ///// It will be triggered when the Items window is closed.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    var window = new Main.wndMain();
+        //    window.Show();
+        //}
+        #endregion
+
+        #region Methods
+        public void RefreshAdd()
+        {
+            try
+            {
+                txtAddItemCode.Clear();
+                txtAddItemDesc.Clear();
+                txtAddCost.Clear();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+        }
+
+        public void RefreshEdit()
+        {          
+            try
+            {
+                txtEditItemCode.Clear();
+                txtEditItemDesc.Clear();
+                txtEditCost.Clear();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+        }
+
+        public void RefreshDelete()
+        {         
+            try
+            {
+                txtDeleteItemCode.Clear();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
         #endregion
 
