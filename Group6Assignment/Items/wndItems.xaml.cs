@@ -38,6 +38,7 @@ namespace Group6Assignment.Items
         /// Get Items DataGrid data.
         /// </summary>
         IEnumerable<clsItem> itemsData;
+
         /// <summary>
         /// An object of clsItemsLogic
         /// </summary>
@@ -58,6 +59,11 @@ namespace Group6Assignment.Items
         #endregion
 
         #region Event handler
+        /// <summary>
+        /// When the wndItems window 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void wndItemsBinding_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -68,6 +74,57 @@ namespace Group6Assignment.Items
             {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Only allows letters to be input
+        /// </summary>
+        /// <param name="sender">sent object</param>
+        /// <param name="e">key argument</param>
+        private void txtLetterInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                //Only allow letters to be entered
+                if (!(e.Key >= Key.A && e.Key <= Key.Z))
+                {
+                    //Allow the user to use the backspace, delete, tab, enter and space
+                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Enter || e.Key == Key.Space))
+                    {
+                        //No other keys allowed besides numbers, backspace, delete, tab, and enter
+                        e.Handled = true;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Only allows numbers to be input
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtDecimalInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (!((e.Key >= Key.D0 && e.Key <= Key.D9) || e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+                {
+                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Enter || e.Key == Key.OemPeriod))
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -151,6 +208,12 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
+                txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                 objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
                 //objItemsLogic.ColorRow(dgItemDescTable, txtAddItemCode.Text);
@@ -177,13 +240,6 @@ namespace Group6Assignment.Items
         {
             try
             {
-                //TextBox txtContent = (TextBox)sender;
-                //objItemsLogic.Clear(txtContent);
-
-                //objItemsLogic.Clear(txtAddItemCode);
-                //objItemsLogic.Clear(txtAddItemDesc);
-                //objItemsLogic.Clear(txtAddCost);
-
                 RefreshAdd();
                 gAdd.Visibility = Visibility.Collapsed;
             }
@@ -205,6 +261,12 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
+                txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                 objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
 
@@ -251,6 +313,12 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if (txtDeleteItemCode.Text == "")
+                {
+                    MessageBox.Show("Please fill out a textbox.");
+                    return;
+                }
+                txtDeleteItemCode.Text = txtDeleteItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                 objItemsLogic.DeleteItem_byRow(txtDeleteItemCode.Text);
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
 
@@ -305,19 +373,39 @@ namespace Group6Assignment.Items
             }
         }
 
+        ///// <summary>
+        ///// It will be triggered when the Items window is closed.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void ItemsWindow_Closed(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var window = new wndMain();
+        //        window.Show();
+
+        //        //this.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
+
+
         /// <summary>
         /// It will be triggered when the Items window is closed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ItemsWindow_Closed(object sender, EventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
             {
-                var window = new wndMain();
+                var window = new Main.wndMain();
                 window.Show();
-
-                //this.Close();
             }
             catch (Exception ex)
             {
@@ -325,21 +413,12 @@ namespace Group6Assignment.Items
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
-
-
-        ///// <summary>
-        ///// It will be triggered when the Items window is closed.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        //{
-        //    var window = new Main.wndMain();
-        //    window.Show();
-        //}
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Clear every textbox in an Add Grid
+        /// </summary>
         public void RefreshAdd()
         {
             try
@@ -355,6 +434,9 @@ namespace Group6Assignment.Items
             }
         }
 
+        /// <summary>
+        /// Clear every textbox in an Edit Grid
+        /// </summary>
         public void RefreshEdit()
         {          
             try
@@ -370,6 +452,9 @@ namespace Group6Assignment.Items
             }
         }
 
+        /// <summary>
+        /// Clear a textbox in a Delete Grid
+        /// </summary>
         public void RefreshDelete()
         {         
             try

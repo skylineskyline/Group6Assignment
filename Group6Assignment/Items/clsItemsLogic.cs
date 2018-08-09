@@ -42,8 +42,16 @@ namespace Group6Assignment.Items
         /// </summary>
         public clsItemsLogic()
         {
-            db = new clsDataAccess();
-            objItemsSQL = new clsItemsSQL();
+            try
+            {
+                db = new clsDataAccess();
+                objItemsSQL = new clsItemsSQL();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
         #endregion
 
@@ -89,12 +97,12 @@ namespace Group6Assignment.Items
 
         #region List
         /// <summary>
-        /// A list of ItemCode.
-        /// It is going to be used to check if a same itemCode already exists or not 
+        /// A list of ItemCodes from the ItemDesc table.
+        /// It is going to be used to check if a same itemCode already exists or not in an inventory
         /// when the user adds/edits/deletes an item.
         /// </summary>
         /// <returns></returns>
-        public List<String> GetItemCodeList()
+        public List<String> GetItemCodeList_ItemDesc()
         {
             try
             {
@@ -103,7 +111,39 @@ namespace Group6Assignment.Items
                 DataSet ds = new DataSet();
                 int iRet = 0;
 
-                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItemCode(), ref iRet);
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItemCode_ItemDesc(), ref iRet);
+                for (int i = 0; i < iRet; i++)
+                {
+                    string sItemCode = ds.Tables[0].Rows[i][0].ToString();
+
+                    itemCodeList.Add(sItemCode);
+                }
+
+                return itemCodeList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// A list of itemCodes from the LineItems table.
+        /// It is going to be used to check if an itemCode exists or not in any invoice
+        /// when the user tries to delete an item.
+        /// </summary>
+        /// <returns></returns>
+        public List<String> GetItemCodeList_LineItems()
+        {
+            try
+            {
+                List<string> itemCodeList = new List<string>();
+
+                DataSet ds = new DataSet();
+                int iRet = 0;
+
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItemCode_LineItems(), ref iRet);
                 for (int i = 0; i < iRet; i++)
                 {
                     string sItemCode = ds.Tables[0].Rows[i][0].ToString();
@@ -133,7 +173,7 @@ namespace Group6Assignment.Items
         {
             try
             {
-                List<string> existingCode = GetItemCodeList();
+                List<string> existingCode = GetItemCodeList_ItemDesc();
 
                 int count = 0;
                 foreach (string pk in existingCode)
@@ -147,6 +187,10 @@ namespace Group6Assignment.Items
                 if (count == 0)
                 {
                     db.ExecuteNonQuery(objItemsSQL.AddItem(itemCode, itemDesc, cost));
+                }
+                else
+                {
+                    MessageBox.Show("This item code already exists in an inventory.");
                 }
             }
             catch (Exception e)
@@ -168,7 +212,7 @@ namespace Group6Assignment.Items
         {
             try
             {
-                List<string> existingCode = GetItemCodeList();
+                List<string> existingCode = GetItemCodeList_ItemDesc();
 
                 int count = 0;
                 foreach (string pk in existingCode)
@@ -183,6 +227,10 @@ namespace Group6Assignment.Items
                 {
                     db.ExecuteNonQuery(objItemsSQL.EditItem(itemCode, itemDesc, cost));
                 }
+                else
+                {
+                    MessageBox.Show("This item code does not exist in an inventory.");
+                }
             }
             catch (Exception e)
             {
@@ -193,14 +241,15 @@ namespace Group6Assignment.Items
 
         /// <summary>
         /// A method to delete an item by row.
+        /// It is not allowed to delete an item which is in an invoice.
+        /// Warn the user with a message that tells which invoices that item is used on.
         /// </summary>
         /// <param name="sCode"></param>
         public void DeleteItem_byRow(string itemCode)
         {
             try
             {
-                List<string> existingCode = GetItemCodeList();
-
+                List<string> existingCode = GetItemCodeList_ItemDesc();
                 int count = 0;
                 foreach (string pk in existingCode)
                 {
@@ -209,28 +258,42 @@ namespace Group6Assignment.Items
                         count++;
                     }
                 }
-
-                if (count != 0)
+              
+                if (count != 0) //If the item exists in an inventory
                 {
-                    db.ExecuteNonQuery(objItemsSQL.DeleteItem(itemCode));
+                    List<string> existingInInvoice = GetItemCodeList_LineItems();
+                    int invoiceCount = 0;
+                    foreach (string lineItemCode in existingInInvoice)
+                    {
+                        if (itemCode == lineItemCode)
+                        {
+                            invoiceCount++;
+                        }
+                    }
+
+                    if (invoiceCount == 0) //if itemCode does not exist in any invoice
+                    {
+                        db.ExecuteNonQuery(objItemsSQL.DeleteItem(itemCode));
+                    }
+                    else
+                    {
+                        DataSet ds = new DataSet();
+                        int iRet = 0;
+                        string lineItemCode = "";
+
+                        ds = db.ExecuteSQLStatement(objItemsSQL.GetLineItem_byRow(itemCode), ref iRet);
+                        for (int i = 0; i < iRet; i++)
+                        {
+                            lineItemCode = ds.Tables[0].Rows[i][0].ToString();
+                        }
+
+                        MessageBox.Show("Cannot delete this item. It is used on invoice " + lineItemCode);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-            }
-        }
-
-        /// <summary>
-        /// When the user adds/edits/deletes an item and clicks "Save" button,
-        /// this method updates DataGrid.
-        /// </summary>
-        public void UpdateDataGrid()
-        {
-            try
-            {
-
+                else
+                {
+                    MessageBox.Show("Nonexistent item");
+                }
             }
             catch (Exception e)
             {
@@ -266,24 +329,41 @@ namespace Group6Assignment.Items
             }
         }
 
-        /// <summary>
-        /// Validate user input in a textbox.
-        /// </summary>
-        /// <param name="sInput"></param>
-        /// <returns></returns>
-        public bool ValidateInput(string sInput)
-        {
-            try
-            {
-                bool bValid = false;
-                return bValid;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-            }
-        }
+        ///// <summary>
+        ///// When the user adds/edits/deletes an item and clicks "Save" button,
+        ///// this method updates DataGrid.
+        ///// </summary>
+        //public void UpdateDataGrid()
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Validate user input in a textbox.
+        ///// </summary>
+        ///// <param name="sInput"></param>
+        ///// <returns></returns>
+        //public bool ValidateInput(string sInput)
+        //{
+        //    try
+        //    {
+        //        bool bValid = false;
+        //        return bValid;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+        //    }
+        //}
 
         ///// <summary>
         ///// When the user adds/edits/deletes an item and clicks "Cancel" button,

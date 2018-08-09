@@ -32,11 +32,23 @@ namespace Group6Assignment.Items
         /// This method gets all ItemCodes(ItemCodes column) from ItemDesc table by ascending order.
         /// </summary>
         /// <returns></returns>
-        public string SelectAllItemCode()
+        public string SelectAllItemCode_ItemDesc()
         {
             string sSQL = "SELECT ItemCode " +
                           "FROM ItemDesc " +
                           "ORDER BY ItemCode ASC";
+            return sSQL;
+        }
+
+        /// <summary>
+        /// This method gets all ItemCodes(ItemCode column) from LineItems table by ascending order.
+        /// </summary>
+        /// <returns></returns>
+        public string SelectAllItemCode_LineItems()
+        {
+            string sSQL = "SELECT ItemCode " +
+                         "FROM LineItems " +
+                         "ORDER BY ItemCode ASC";
             return sSQL;
         }
 
@@ -156,7 +168,20 @@ namespace Group6Assignment.Items
         public string DeleteItem(string sItemCode)
         {
             string sSQL = "DELETE FROM ItemDesc " +
-                        "WHERE ItemCode = " + "'" + sItemCode + "'";
+                          "WHERE ItemCode = " + "'" + sItemCode + "'";
+            return sSQL;
+        }
+
+        /// <summary>
+        /// This method selects an invoiceNum from the LineItems table with an itemCode.
+        /// </summary>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public string GetLineItem_byRow(string itemCode)
+        {
+            string sSQL = "SELECT InvoiceNum " +
+                "FROM LineItems " +
+                "WHERE ItemCode = " + "'" + itemCode + "'";
             return sSQL;
         }
     }
