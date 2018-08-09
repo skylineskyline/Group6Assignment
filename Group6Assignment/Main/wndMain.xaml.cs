@@ -61,6 +61,8 @@ namespace Group6Assignment.Main
             openItems = new Items.wndItems();
             openSearch = new Search.wndSearch();
 
+            StartWindow();
+
 
         }
 
@@ -276,6 +278,16 @@ namespace Group6Assignment.Main
             Application.Current.Shutdown();
         }
 
+
+
+
+
+        private void StartWindow()
+        {
+            TbInvoiceNumber.Visibility = Visibility.Hidden;
+            TbInvoiceNumber.IsEnabled = false;
+
+        }
 
 
         /// <summary>
