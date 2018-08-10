@@ -38,19 +38,19 @@
 
         <!-- Select Items -->
         <TextBlock HorizontalAlignment="Left" Margin="236,210,0,0" TextWrapping="Wrap" Text="Items:" VerticalAlignment="Top" Height="27" Width="48" FontSize="15"/>
-        <ComboBox x:Name="CinvoiceList" HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385" SelectionChanged="CinvoiceList_SelectionChanged"/>
+        <ComboBox x:Name="CinvoiceList" HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385" SelectionChanged="CinvoiceList_SelectionChanged" FontSize="15" FontFamily="Calibri"/>
 
         <!--Add Item button-->
         <Button x:Name="BaddItem" Content="Add Item" Height="25" VerticalAlignment="Top" Margin="686,210,18,0" FontSize="15" Click="BaddItem_Click"/>
 
 
         <!-- DataGrid for selected item-->
-        <DataGrid HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567">
+        <DataGrid x:Name="dgDisplaytems" HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Item Code" Width="100"/>
-                <DataGridTextColumn Header="Item Description" Width="300"/>
-                <DataGridTextColumn Header="Item Cost" Width="*"/>
-                
+                <DataGridTextColumn Header="Item Code" Binding="{Binding Path=ItemCode}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Item Description" Binding="{Binding Path=ItemDesc}" Width="300"></DataGridTextColumn>
+                <DataGridTextColumn Header="Item Cost" Binding="{Binding Path=Cost}" Width="*"></DataGridTextColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 

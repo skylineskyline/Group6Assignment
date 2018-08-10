@@ -187,8 +187,15 @@ namespace Group6Assignment.Main
         {
             try
             {
-                clsMainLogic.ItemDesc itemDesc = (clsMainLogic.ItemDesc)CinvoiceList.SelectedItem;
-                mainLogic.AddInvoiceItem(itemDesc);
+
+                //clsMainLogic.ItemDesc itemDesc = (clsMainLogic.ItemDesc)CinvoiceList.SelectedItem;
+
+                if(CinvoiceList.SelectedItem is clsMainLogic.ItemDescInfo selectedItem)
+                {
+                    mainLogic.AddItemToInvoice(selectedItem);
+                }
+
+                UpdateMainItemsInvoceList();
 
             }
             catch (Exception)
@@ -231,6 +238,8 @@ namespace Group6Assignment.Main
         {
             try
             {
+                //BaddItem.IsEnabled = false;
+                BaddItem.IsEnabled = CinvoiceList.SelectedItem is clsMainLogic.ItemDescInfo;
 
             }
             catch (Exception)
@@ -244,9 +253,12 @@ namespace Group6Assignment.Main
         /// <summary>
         /// This method updates list of LineItem on the main screen
         /// </summary>
-        public void UpdateMainLineItems()
+        public void UpdateMainItemsInvoceList()
         {
+            List<clsMainLogic.ItemDescInfo> addedList = mainLogic.GetAddedItem();
 
+            var addedListItems = mainLogic.GetAddedItem();
+            dgDisplaytems.ItemsSource = addedListItems;
         }
 
 
@@ -333,7 +345,7 @@ namespace Group6Assignment.Main
                     MethodBase.GetCurrentMethod().Name, ex.Message);
             }
 
-            //BaddItem.IsEnabled = false;                      
+            
         }
 
 
@@ -346,7 +358,6 @@ namespace Group6Assignment.Main
         {
             try
             {
-                List<ItemDescInfo> loadItemsIN = mainLogic.GetAllItemDesc();
                 var loadItems = mainLogic.GetAllItemDesc();
                 CinvoiceList.ItemsSource = loadItems;
 

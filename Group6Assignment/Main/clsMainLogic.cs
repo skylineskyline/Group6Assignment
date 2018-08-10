@@ -22,7 +22,7 @@ namespace Group6Assignment.Main
         /// </summary>
         private clsMainSQL clsMainSQL;
 
-        private ItemDescInfo itemDescInfo;
+        //private ItemDescInfo itemDescInfo;
 
         private clsDataAccess dataAccess;
 
@@ -30,8 +30,9 @@ namespace Group6Assignment.Main
         /// <summary>
         /// Variable to hold current ItemDesc list user selected. 
         /// </summary>
-        public List<ItemDesc> listItemDesc;
+        private List<ItemDescInfo> listItemUserSelected;
 
+        private decimal totalCostCal = 0;
 
         /// <summary>
         /// Constructor
@@ -50,6 +51,7 @@ namespace Group6Assignment.Main
         {
             dataAccess = new clsDataAccess();            
             DataSet ds = new DataSet();
+            ItemDescInfo itemDescInfo;
             int iRet = 0;
 
             ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetAllItemDesc(), ref iRet);
@@ -75,18 +77,28 @@ namespace Group6Assignment.Main
         /// <summary>
         /// This method adds items in datagrid.
         /// </summary>
-        public void AddInvoiceItem(ItemDesc selectedItem)
+        public void AddItemToInvoice(ItemDescInfo selectedItem)
+        {
+            listItemUserSelected = new List<ItemDescInfo>();
+
+            listItemUserSelected.Add(selectedItem);
+            CalculateTotal(selectedItem);
+        }
+
+
+        public List<ItemDescInfo> GetAddedItem()
         {
 
+            return listItemUserSelected;
         }
 
 
         /// <summary>
         /// This method calculates total cost of items user added in the grid list.
         /// </summary>
-        private void CalculateTotal()
+        private void CalculateTotal(ItemDescInfo calulateCost)
         {
-
+            totalCostCal += calulateCost.Cost;
         }
 
 
@@ -134,13 +146,18 @@ namespace Group6Assignment.Main
             /// </summary>
             public DateTime InvoiceDate { get; set; }
 
+            /// <summary>
+            /// Total cost of the Invoice.
+            /// </summary>
+            public decimal TotalCost { get; set; }
+
         }
 
 
         /// <summary>
         /// This class stores Invoice description from database
         /// </summary>
-        public class ItemDesc
+        public class ItemDescInfo
         {
             /// <summary>
             /// Item code of item.
@@ -150,12 +167,18 @@ namespace Group6Assignment.Main
             /// <summary>
             /// Description of item.
             /// </summary>
-            public string ItemDescription { get; set; }
+            public string ItemDesc { get; set; }
 
             /// <summary>
             /// Cost of item.(Currency type in Database)
             /// </summary>
             public decimal Cost { get; set; }
+
+
+            public override string ToString()
+            {
+                return "(" + ItemCode + ") - " + ItemDesc + " - $" + String.Format("{0:0.00}", Cost);
+            }
         }
 
 

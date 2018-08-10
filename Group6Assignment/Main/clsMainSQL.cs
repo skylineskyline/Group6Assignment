@@ -32,7 +32,7 @@ namespace Group6Assignment.Main
         /// <returns></returns>
         public string SQLGetAllItemDesc()
         {
-            return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
+            return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc ORDER BY ItemCode ASC";
             
         }
 
