@@ -9,9 +9,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.Reflection;
 
 namespace Group6Assignment.Main
 {
@@ -23,11 +22,15 @@ namespace Group6Assignment.Main
         /// </summary>
         private clsMainSQL clsMainSQL;
 
+        private ItemDescInfo itemDescInfo;
+
+        private clsDataAccess dataAccess;
+
 
         /// <summary>
         /// Variable to hold current ItemDesc list user selected. 
         /// </summary>
-        private List<ItemDesc> listItemDesc;
+        public List<ItemDesc> listItemDesc;
 
 
         /// <summary>
@@ -36,19 +39,37 @@ namespace Group6Assignment.Main
         public clsMainLogic()
         {
             clsMainSQL = new clsMainSQL();
+
         }
 
 
         /// <summary>
         /// This method gets all records from ItemDesc table for showing up the item list in item combo box.
         /// </summary>
-        public void GetAllItemDesc()
+        public List<ItemDescInfo> GetAllItemDesc()
         {
-            clsMainSQL.SQLGetAllItemDesc();
+            dataAccess = new clsDataAccess();            
+            DataSet ds = new DataSet();
+            int iRet = 0;
+
+            ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetAllItemDesc(), ref iRet);
+
+            List<ItemDescInfo> itemDescInfoList = new List<ItemDescInfo>();
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                itemDescInfo = new ItemDescInfo();
+
+                itemDescInfo.ItemCode = ds.Tables[0].Rows[i][0].ToString();
+                itemDescInfo.ItemDesc = ds.Tables[0].Rows[i][1].ToString();
+                itemDescInfo.Cost = (decimal)ds.Tables[0].Rows[i][2];
+               
+                itemDescInfoList.Add(itemDescInfo);               
+            }
+
+            return itemDescInfoList;
+
         }
-
-
-
 
 
         /// <summary>

@@ -25,6 +25,7 @@ using System.ComponentModel;
 using Group6Assignment.Items;
 using Group6Assignment.Search;
 
+
 namespace Group6Assignment.Main
 {
     /// <summary>
@@ -323,6 +324,8 @@ namespace Group6Assignment.Main
                 DpInvoiceInsertDate.Visibility = Visibility.Visible;
                 DpInvoiceInsertDate.SelectedDate = DateTime.Now;
                 CinvoiceList.IsEnabled = true;
+
+                LoadItems();
             }
             catch (Exception ex)
             {
@@ -343,6 +346,12 @@ namespace Group6Assignment.Main
         {
             try
             {
+                List<ItemDescInfo> loadItemsIN = mainLogic.GetAllItemDesc();
+                var loadItems = mainLogic.GetAllItemDesc();
+                CinvoiceList.ItemsSource = loadItems;
+
+
+
 
             }
             catch (Exception ex)

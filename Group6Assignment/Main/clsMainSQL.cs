@@ -33,6 +33,7 @@ namespace Group6Assignment.Main
         public string SQLGetAllItemDesc()
         {
             return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
+            
         }
 
 
