@@ -30,7 +30,7 @@
 
         <!-- Invoice Number-->
         <TextBlock HorizontalAlignment="Left" Margin="236,145,0,0" TextWrapping="Wrap" Text="Invoice Number: " VerticalAlignment="Top" Height="27" Width="115" FontSize="15"/>
-        <TextBlock x:Name="TbInvoiceNumber" HorizontalAlignment="Left" Margin="356,145,0,0" TextWrapping="Wrap" Text="TBD" VerticalAlignment="Top" Height="27" Width="35" FontSize="15"/>
+        <TextBlock x:Name="TbInvoiceNumber" HorizontalAlignment="Left" Margin="356,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Width="35" FontSize="15"/>
 
         <!-- Invoice Date-->
         <TextBlock HorizontalAlignment="Left" Margin="417,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Width="95" FontSize="15"><Run Text="Invoice "/><Run Text="Date"/><Run Text=":"/></TextBlock>
@@ -50,6 +50,7 @@
                 <DataGridTextColumn Header="Item Code" Width="100"/>
                 <DataGridTextColumn Header="Item Description" Width="300"/>
                 <DataGridTextColumn Header="Item Cost" Width="*"/>
+                
             </DataGrid.Columns>
         </DataGrid>
 

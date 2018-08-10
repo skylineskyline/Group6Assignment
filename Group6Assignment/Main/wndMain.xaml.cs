@@ -124,6 +124,9 @@ namespace Group6Assignment.Main
                 //Load all ItemDesc record for combo box;
                 //var items = mainLogic.GetAllItemDesc();
                 //CinvoiceList.ItemsSource = items;
+
+                RunningWindowStatus();
+
             }
             catch (Exception)
             {
@@ -287,6 +290,24 @@ namespace Group6Assignment.Main
             TbInvoiceNumber.Visibility = Visibility.Hidden;
             TbInvoiceNumber.IsEnabled = false;
 
+            DpInvoiceInsertDate.Visibility = Visibility.Hidden;
+            CinvoiceList.IsEnabled = false;
+            BaddItem.IsEnabled = false;
+        }
+
+
+        private void RunningWindowStatus()
+        {
+            TbInvoiceNumber.Visibility = Visibility.Visible;
+            TbInvoiceNumber.IsEnabled = true;
+            TbInvoiceNumber.Text = "TBD";
+
+            DpInvoiceInsertDate.Visibility = Visibility.Visible;
+            DpInvoiceInsertDate.SelectedDate = DateTime.Now;
+            CinvoiceList.IsEnabled = true;
+            //BaddItem.IsEnabled = false;
+
+            
         }
 
 
