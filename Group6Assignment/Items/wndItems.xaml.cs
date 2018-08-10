@@ -208,13 +208,18 @@ namespace Group6Assignment.Items
         {
             try
             {
-                if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
+                MessageBoxResult userAnswer = MessageBox.Show("Are you sure to add this item?", "Add Confirmation", MessageBoxButton.YesNo);
+                if (userAnswer == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("Please fill out all of textboxes.");
-                    return;
+                    if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
+                    {
+                        MessageBox.Show("Please fill out all of textboxes.");
+                        return;
+                    }
+                    txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
+                    objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
                 }
-                txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
-                objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
+
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
                 //objItemsLogic.ColorRow(dgItemDescTable, txtAddItemCode.Text);
 
@@ -261,13 +266,18 @@ namespace Group6Assignment.Items
         {
             try
             {
-                if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
+                MessageBoxResult userAnswer = MessageBox.Show("Are you sure to edit this item?", "Edit Confirmation", MessageBoxButton.YesNo);
+                if (userAnswer == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("Please fill out all of textboxes.");
-                    return;
+                    if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
+                    {
+                        MessageBox.Show("Please fill out all of textboxes.");
+                        return;
+                    }
+                    txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
+                    objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
                 }
-                txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
-                objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
+
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
 
                 RefreshEdit();
@@ -313,13 +323,18 @@ namespace Group6Assignment.Items
         {
             try
             {
-                if (txtDeleteItemCode.Text == "")
+                MessageBoxResult userAnswer = MessageBox.Show("Are you sure to delete this item?", "Delete Confirmation", MessageBoxButton.YesNo);
+                if (userAnswer == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("Please fill out a textbox.");
-                    return;
+                    if (txtDeleteItemCode.Text == "")
+                    {
+                        MessageBox.Show("Please fill out a textbox.");
+                        return;
+                    }
+                    txtDeleteItemCode.Text = txtDeleteItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
+                    objItemsLogic.DeleteItem_byRow(txtDeleteItemCode.Text);
                 }
-                txtDeleteItemCode.Text = txtDeleteItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
-                objItemsLogic.DeleteItem_byRow(txtDeleteItemCode.Text);
+
                 dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
 
                 RefreshDelete();

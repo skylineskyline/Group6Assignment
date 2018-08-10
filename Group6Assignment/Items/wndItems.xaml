@@ -15,11 +15,11 @@
 
 
         <DataGrid x:Name="dgItemDescTable" AutoGenerateColumns="False" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Height="230" Width="580" 
-                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ItemCode" Binding="{Binding Path=ItemCode}"></DataGridTextColumn>
-                <DataGridTextColumn Header="ItemDescription" Binding="{Binding Path=ItemDesc}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Cost" Binding="{Binding Path=Cost}"></DataGridTextColumn>
+                <DataGridTextColumn x:Name="dgColumn_ItemCode" Header="ItemCode" Binding="{Binding Path=ItemCode}"></DataGridTextColumn>
+                <DataGridTextColumn x:Name="dgColumn_ItemDescription" Header="ItemDescription" Binding="{Binding Path=ItemDesc}" Width="200"></DataGridTextColumn>
+                <DataGridTextColumn x:Name="dgColumn_Cost" Header="Cost" Binding="{Binding Path=Cost}" Width="50"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
