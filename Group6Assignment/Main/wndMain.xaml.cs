@@ -284,31 +284,75 @@ namespace Group6Assignment.Main
 
 
 
-
+        /// <summary>
+        /// This method restricts item drop-down list, add button, invoice number, and date
+        /// until user clicks 'Create Invoice' button.
+        /// </summary>
         private void StartWindow()
         {
-            TbInvoiceNumber.Visibility = Visibility.Hidden;
-            TbInvoiceNumber.IsEnabled = false;
+            try
+            {
+                TbInvoiceNumber.Visibility = Visibility.Hidden;
+                TbInvoiceNumber.IsEnabled = false;
 
-            DpInvoiceInsertDate.Visibility = Visibility.Hidden;
-            CinvoiceList.IsEnabled = false;
-            BaddItem.IsEnabled = false;
+                DpInvoiceInsertDate.Visibility = Visibility.Hidden;
+                CinvoiceList.IsEnabled = false;
+                BaddItem.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+
         }
 
 
+
+        /// <summary>
+        /// This method allows user can click Invoice data, item drop-down list.
+        /// </summary>
         private void RunningWindowStatus()
         {
-            TbInvoiceNumber.Visibility = Visibility.Visible;
-            TbInvoiceNumber.IsEnabled = true;
-            TbInvoiceNumber.Text = "TBD";
+            try
+            {
+                TbInvoiceNumber.Visibility = Visibility.Visible;
+                TbInvoiceNumber.IsEnabled = true;
+                TbInvoiceNumber.Text = "TBD";
 
-            DpInvoiceInsertDate.Visibility = Visibility.Visible;
-            DpInvoiceInsertDate.SelectedDate = DateTime.Now;
-            CinvoiceList.IsEnabled = true;
-            //BaddItem.IsEnabled = false;
+                DpInvoiceInsertDate.Visibility = Visibility.Visible;
+                DpInvoiceInsertDate.SelectedDate = DateTime.Now;
+                CinvoiceList.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
 
-            
+            //BaddItem.IsEnabled = false;                      
         }
+
+
+
+        /// <summary>
+        /// This method fills out combo box drop-down list from Item list.
+        /// Then user clicks item(s) in order to add to the Invoice list.
+        /// </summary>
+        private void LoadItems()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+
 
 
         /// <summary>
