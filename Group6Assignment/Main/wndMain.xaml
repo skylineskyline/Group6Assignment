@@ -45,7 +45,7 @@
 
 
         <!-- DataGrid for selected item-->
-        <DataGrid x:Name="dgDisplaytems" HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgDisplaytems" HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Item Code" Binding="{Binding Path=ItemCode}" Width="100"></DataGridTextColumn>
                 <DataGridTextColumn Header="Item Description" Binding="{Binding Path=ItemDesc}" Width="300"></DataGridTextColumn>

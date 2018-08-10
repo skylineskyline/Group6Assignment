@@ -30,7 +30,7 @@ namespace Group6Assignment.Main
         /// <summary>
         /// Variable to hold current ItemDesc list user selected. 
         /// </summary>
-        private List<ItemDescInfo> listItemUserSelected;
+        private List<ItemDescInfo> listItemUserSelected = new List<ItemDescInfo>();
 
         private decimal totalCostCal = 0;
 
@@ -79,10 +79,11 @@ namespace Group6Assignment.Main
         /// </summary>
         public void AddItemToInvoice(ItemDescInfo selectedItem)
         {
-            listItemUserSelected = new List<ItemDescInfo>();
+            //listItemUserSelected = new List<ItemDescInfo>();
 
             listItemUserSelected.Add(selectedItem);
-            CalculateTotal(selectedItem);
+            totalCostCal += selectedItem.Cost;
+            //CalculateTotal(selectedItem);
         }
 
 
@@ -96,9 +97,9 @@ namespace Group6Assignment.Main
         /// <summary>
         /// This method calculates total cost of items user added in the grid list.
         /// </summary>
-        private void CalculateTotal(ItemDescInfo calulateCost)
+        public decimal CalculateTotal()
         {
-            totalCostCal += calulateCost.Cost;
+            return totalCostCal;
         }
 
 

@@ -193,10 +193,12 @@ namespace Group6Assignment.Main
                 if(CinvoiceList.SelectedItem is clsMainLogic.ItemDescInfo selectedItem)
                 {
                     mainLogic.AddItemToInvoice(selectedItem);
+                    UpdateMainItemsInvoceList();
+                    TbTotalCost.Text = String.Format("${0:0.00}", mainLogic.CalculateTotal());
+                    BsaveInvoice.IsEnabled = true;
                 }
 
-                UpdateMainItemsInvoceList();
-
+                
             }
             catch (Exception)
             {
@@ -258,6 +260,7 @@ namespace Group6Assignment.Main
             List<clsMainLogic.ItemDescInfo> addedList = mainLogic.GetAddedItem();
 
             var addedListItems = mainLogic.GetAddedItem();
+            dgDisplaytems.ItemsSource = null;
             dgDisplaytems.ItemsSource = addedListItems;
         }
 
