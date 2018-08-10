@@ -208,14 +208,15 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
+
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to add this item?", "Add Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
-                {
-                    if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
-                    {
-                        MessageBox.Show("Please fill out all of textboxes.");
-                        return;
-                    }
+                {                  
                     txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
                 }
@@ -266,14 +267,15 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
+
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to edit this item?", "Edit Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
-                {
-                    if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
-                    {
-                        MessageBox.Show("Please fill out all of textboxes.");
-                        return;
-                    }
+                {                   
                     txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
                 }
@@ -323,14 +325,15 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if (txtDeleteItemCode.Text == "")
+                {
+                    MessageBox.Show("Please fill out a textbox.");
+                    return;
+                }
+
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to delete this item?", "Delete Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
-                {
-                    if (txtDeleteItemCode.Text == "")
-                    {
-                        MessageBox.Show("Please fill out a textbox.");
-                        return;
-                    }
+                {                    
                     txtDeleteItemCode.Text = txtDeleteItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.DeleteItem_byRow(txtDeleteItemCode.Text);
                 }

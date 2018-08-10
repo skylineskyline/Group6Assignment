@@ -56,7 +56,7 @@
                     <TextBox x:Name="txtAddCost" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtDecimalInput_PreviewKeyDown"/>
                 </StackPanel>
 
-                <Button x:Name="btnAddSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnAddSave_Click"/>
+                <Button x:Name="btnAddSave" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnAddSave_Click"/>
                 <Button x:Name="btnAddCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="185,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnAddCancel_Click"/>
             </Grid>
 
@@ -80,7 +80,7 @@
                     <TextBox x:Name="txtEditCost" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtDecimalInput_PreviewKeyDown"/>
                 </StackPanel>
 
-                <Button x:Name="btnEditSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnEditSave_Click"/>
+                <Button x:Name="btnEditSave" Content="Edit" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnEditSave_Click"/>
                 <Button x:Name="btnEditCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="185,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnEditCancel_Click"/>
             </Grid>
 
@@ -100,7 +100,7 @@
                     <TextBox x:Name="txtDeleteItemCode" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,10,0,0" FontSize="16" Width="300" PreviewKeyDown="txtLetterInput_PreviewKeyDown"/>
                 </StackPanel>
 
-                <Button x:Name="btnDeleteSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnDeleteSave_Click"/>
+                <Button x:Name="btnDeleteSave" Content="Delete" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnDeleteSave_Click"/>
                 <Button x:Name="btnDeleteCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="185,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnDeleteCancel_Click"/>
             </Grid>
 
