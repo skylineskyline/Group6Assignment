@@ -29,14 +29,11 @@ namespace Group6Assignment.Items
         /// A class which connects to the clsDataAccess class
         /// </summary>
         clsDataAccess db;
-        /// <summary>
-        /// DataSet type
-        /// </summary>
-        DataSet ds;
+
         /// <summary>
         /// A SQL class for Items(ItemDesc Table)
         /// </summary>
-        clsItemsSQL SQL_Items;
+        clsItemsSQL objItemsSQL;
         #endregion
 
         #region Constructor
@@ -45,9 +42,16 @@ namespace Group6Assignment.Items
         /// </summary>
         public clsItemsLogic()
         {
-            db = new clsDataAccess();
-            ds = new DataSet();
-            SQL_Items = new clsItemsSQL();
+            try
+            {
+                db = new clsDataAccess();
+                objItemsSQL = new clsItemsSQL();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
         #endregion
 
@@ -60,28 +64,100 @@ namespace Group6Assignment.Items
         /// <returns></returns>
         public ObservableCollection<clsItem> GetItemCollection()
         {
-            ObservableCollection<clsItem> itemCltn = new ObservableCollection<clsItem>();
+            ObservableCollection<clsItem> items = new ObservableCollection<clsItem>();
 
+            try
+            {
+                int iRet = 0;
+                DataSet ds = new DataSet();
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItems(), ref iRet);
 
+                //for(int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                for (int i = 0; i < iRet; i++)
+                {
+                    //Fill out attributes for each item object
+                    clsItem objItem = new clsItem();
+                    objItem.ItemCode = ds.Tables[0].Rows[i][0].ToString();
+                    objItem.ItemDesc = ds.Tables[0].Rows[i][1].ToString();
+                    objItem.Cost = Convert.ToDecimal(ds.Tables[0].Rows[i][2].ToString());
 
-            return itemCltn;
+                    //Add an item object to an ObservableCollection<clsItem>
+                    items.Add(objItem);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+
+            return items;
         }
         #endregion
 
         #region List
         /// <summary>
-        /// A list of ItemCode.
-        /// It is going to be used to check if a same itemCode already exists or not 
+        /// A list of ItemCodes from the ItemDesc table.
+        /// It is going to be used to check if a same itemCode already exists or not in an inventory
         /// when the user adds/edits/deletes an item.
         /// </summary>
         /// <returns></returns>
-        public List<String> GetItemCodeList()
+        public List<String> GetItemCodeList_ItemDesc()
         {
-            List<String> itemCodeList = new List<String>();
+            try
+            {
+                List<string> itemCodeList = new List<string>();
 
+                DataSet ds = new DataSet();
+                int iRet = 0;
 
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItemCode_ItemDesc(), ref iRet);
+                for (int i = 0; i < iRet; i++)
+                {
+                    string sItemCode = ds.Tables[0].Rows[i][0].ToString();
 
-            return itemCodeList;
+                    itemCodeList.Add(sItemCode);
+                }
+
+                return itemCodeList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+        }
+
+        /// <summary>
+        /// A list of itemCodes from the LineItems table.
+        /// It is going to be used to check if an itemCode exists or not in any invoice
+        /// when the user tries to delete an item.
+        /// </summary>
+        /// <returns></returns>
+        public List<String> GetItemCodeList_LineItems()
+        {
+            try
+            {
+                List<string> itemCodeList = new List<string>();
+
+                DataSet ds = new DataSet();
+                int iRet = 0;
+
+                ds = db.ExecuteSQLStatement(objItemsSQL.SelectAllItemCode_LineItems(), ref iRet);
+                for (int i = 0; i < iRet; i++)
+                {
+                    string sItemCode = ds.Tables[0].Rows[i][0].ToString();
+
+                    itemCodeList.Add(sItemCode);
+                }
+
+                return itemCodeList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
         #endregion
 
@@ -93,9 +169,35 @@ namespace Group6Assignment.Items
         /// <param name="sCode"></param>
         /// <param name="sDesc"></param>
         /// <param name="dCost"></param>
-        public void AddItem_byRow(string sCode, string sDesc, decimal dCost)
+        public void AddItem_byRow(string itemCode, string itemDesc, decimal cost)
         {
+            try
+            {
+                List<string> existingCode = GetItemCodeList_ItemDesc();
 
+                int count = 0;
+                foreach (string pk in existingCode)
+                {
+                    if (itemCode == pk)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 0)
+                {
+                    db.ExecuteNonQuery(objItemsSQL.AddItem(itemCode, itemDesc, cost));
+                }
+                else
+                {
+                    MessageBox.Show("This item code already exists in an inventory.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -106,27 +208,98 @@ namespace Group6Assignment.Items
         /// <param name="sCode"></param>
         /// <param name="sDesc"></param>
         /// <param name="dCost"></param>
-        public void EditItem(string sCode, string sDesc, decimal dCost)
+        public void EditItem(string itemCode, string itemDesc, decimal cost)
         {
+            try
+            {
+                List<string> existingCode = GetItemCodeList_ItemDesc();
 
+                int count = 0;
+                foreach (string pk in existingCode)
+                {
+                    if (itemCode == pk)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count != 0)
+                {
+                    db.ExecuteNonQuery(objItemsSQL.EditItem(itemCode, itemDesc, cost));
+                }
+                else
+                {
+                    MessageBox.Show("This item code does not exist in an inventory.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
         /// A method to delete an item by row.
+        /// It is not allowed to delete an item which is in an invoice.
+        /// Warn the user with a message that tells which invoices that item is used on.
         /// </summary>
         /// <param name="sCode"></param>
-        public void DeleteItem_byRow(string sCode)
+        public void DeleteItem_byRow(string itemCode)
         {
+            try
+            {
+                List<string> existingCode = GetItemCodeList_ItemDesc();
+                int count = 0;
+                foreach (string pk in existingCode)
+                {
+                    if (itemCode == pk)
+                    {
+                        count++;
+                    }
+                }
+              
+                if (count != 0) //If the item exists in an inventory
+                {
+                    List<string> existingInInvoice = GetItemCodeList_LineItems();
+                    int invoiceCount = 0;
+                    foreach (string lineItemCode in existingInInvoice)
+                    {
+                        if (itemCode == lineItemCode)
+                        {
+                            invoiceCount++;
+                        }
+                    }
 
-        }
+                    if (invoiceCount == 0) //if itemCode does not exist in any invoice
+                    {
+                        db.ExecuteNonQuery(objItemsSQL.DeleteItem(itemCode));
+                    }
+                    else
+                    {
+                        DataSet ds = new DataSet();
+                        int iRet = 0;
+                        string lineItemCode = "";
 
-        /// <summary>
-        /// When the user adds/edits/deletes an item and clicks "Save" button,
-        /// this method updates DataGrid.
-        /// </summary>
-        public void UpdateDataGrid(DataGrid dg)
-        {
+                        ds = db.ExecuteSQLStatement(objItemsSQL.GetLineItem_byRow(itemCode), ref iRet);
+                        for (int i = 0; i < iRet; i++)
+                        {
+                            lineItemCode = ds.Tables[0].Rows[i][0].ToString();
+                        }
 
+                        MessageBox.Show("Cannot delete this item. It is used on invoice " + lineItemCode);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Nonexistent item");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>
@@ -135,49 +308,117 @@ namespace Group6Assignment.Items
         /// </summary>
         /// <param name="dg"></param>
         /// <param name="sCode"></param>
-        public void ColorRow(DataGrid dg, string sCode)
+        public void ColorRow(DataGrid dg, string pkCode)
         {
-            //clsItem objItem = new clsItem();
-            //var row = dg.ItemContainerGenerator.ContainerFromItem(objItem) as DataGridRow;
+            try
+            {
+                //clsItem objItem = new clsItem();
+                //var row = dg.ItemContainerGenerator.ContainerFromItem(objItem) as DataGridRow;
 
-            ////SolidColorBrush brush = new SolidColorBrush(Colors.Yellow);
-            //if (objItem.ItemCode == sCode)
-            //{
-            //    //row.Background = brush;
-            //    row.Background = Brushes.Yellow;
-            //}
+                ////SolidColorBrush brush = new SolidColorBrush(Colors.Yellow);
+                //if (objItem.ItemCode == pkCode)
+                //{
+                //    //row.Background = brush;
+                //    row.Background = Brushes.Yellow;
+                //}
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
-        /// <summary>
-        /// When the user adds/edits/deletes an item and clicks "Cancel" button,
-        /// this method clears data in textbox.
-        /// </summary>
-        public void Clear(TextBox txt)
-        {
-            txt.Text = " ";
-        }
+        ///// <summary>
+        ///// When the user adds/edits/deletes an item and clicks "Save" button,
+        ///// this method updates DataGrid.
+        ///// </summary>
+        //public void UpdateDataGrid()
+        //{
+        //    try
+        //    {
 
-        /// <summary>
-        /// Enable a button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void EnableButton(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-            btn.IsEnabled = true; ;
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+        //    }
+        //}
 
-        /// <summary>
-        /// Disable a button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void DisableButton(object sender, RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-            btn.IsEnabled = false;
-        }
+        ///// <summary>
+        ///// Validate user input in a textbox.
+        ///// </summary>
+        ///// <param name="sInput"></param>
+        ///// <returns></returns>
+        //public bool ValidateInput(string sInput)
+        //{
+        //    try
+        //    {
+        //        bool bValid = false;
+        //        return bValid;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// When the user adds/edits/deletes an item and clicks "Cancel" button,
+        ///// this method clears data in textbox.
+        ///// </summary>
+        //public void Clear(TextBox txt)
+        //{          
+        //    try
+        //    {
+        //        txt.Text = "";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Enable a button.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //public void EnableButton(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Button btn = (Button)sender;
+        //        btn.IsEnabled = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Disable a button.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //public void DisableButton(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        Button btn = (Button)sender;
+        //        btn.IsEnabled = false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
 
         //public void Visible()
         //{
@@ -188,15 +429,25 @@ namespace Group6Assignment.Items
 
         //}
 
+        #endregion
+
+        #region Exception Handler
         /// <summary>
-        /// Validate user input in a textbox.
+        /// Handles the error
         /// </summary>
-        /// <param name="sInput"></param>
-        /// <returns></returns>
-        public bool ValidateInput(string sInput)
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
         {
-            bool bValid = false;
-            return bValid;
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
         }
         #endregion
     }
