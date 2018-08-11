@@ -37,7 +37,7 @@ namespace Group6Assignment.Search
 
         public clsSearchLogic()
         {
-
+            clsSearchSQLClass = new clsSearchSQL();
         }
 
         /// <summary>
@@ -48,12 +48,26 @@ namespace Group6Assignment.Search
         {
             get
             {
-                return iInvoiceNumber;
+                try
+                {
+                    return iInvoiceNumber;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                }
             }
+
             set
             {
-                iInvoiceNumber = value;
-
+                try
+                {
+                    iInvoiceNumber = value;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                }
             }
         }
 
@@ -63,7 +77,22 @@ namespace Group6Assignment.Search
         public List<string> PopulateNumberCB()
         {
             List<string> comboList = new List<string>();
-            return comboList;
+            DataSet ds = new DataSet();
+            try
+            {
+                ds = clsSearchSQLClass.PopulateNumberCB();
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    comboList.Add(ds.Tables[0].Rows[i][0].ToString());
+                }
+
+                return comboList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -72,7 +101,22 @@ namespace Group6Assignment.Search
         public List<string> PopulateDateCB()
         {
             List<string> comboList = new List<string>();
-            return comboList;
+            DataSet ds = new DataSet();
+            try
+            {
+                ds = clsSearchSQLClass.PopulateDateCB();
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    comboList.Add(ds.Tables[0].Rows[i][0].ToString());
+                }
+
+                return comboList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -81,7 +125,22 @@ namespace Group6Assignment.Search
         public List<string> PopulateTotalChargeCB()
         {
             List<string> comboList = new List<string>();
-            return comboList;
+            DataSet ds = new DataSet();
+            try
+            {
+                ds = clsSearchSQLClass.PopulateTotalChargeCB();
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    comboList.Add(ds.Tables[0].Rows[i][0].ToString());
+                }
+
+                return comboList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -90,7 +149,16 @@ namespace Group6Assignment.Search
         /// <returns></returns>
         public DataSet PopulateDataGrid()
         {
-            return CurrentGridData;
+            try
+            {
+                CurrentGridData = clsSearchSQLClass.PopulateDataGrid();
+
+                return CurrentGridData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -102,7 +170,27 @@ namespace Group6Assignment.Search
         /// <returns></returns>
         public DataSet UpdateDataGrid(string invoice, string date, string charge)
         {
-            return CurrentGridData;
+            try
+            {
+                List<string> list = new List<string>();
+                int ii = -1;
+                double ic = -1;
+                if (invoice != null)
+                    Int32.TryParse(invoice, out ii);
+
+                if (charge != null)
+                {
+                    string sStrippedCharge = charge.Trim('$');
+                    Double.TryParse(sStrippedCharge, out ic);
+                }
+
+                CurrentGridData = clsSearchSQLClass.UpdateDataGrid(ii, date, ic);
+                return CurrentGridData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
     }// end class

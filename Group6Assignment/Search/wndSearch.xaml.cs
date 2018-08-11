@@ -55,8 +55,10 @@ namespace Group6Assignment.Search
         /// The method will initialize component, AMD update the forms
         /// </summary>
         public wndSearch()
-        {           
-                InitializeComponent();
+        {
+            InitializeComponent();
+            clsSearchLogicClass = new clsSearchLogic();
+            UpdateForm();
         }
 
         /// <summary>
@@ -64,7 +66,17 @@ namespace Group6Assignment.Search
         /// </summary>
         private void UpdateForm()
         {
-
+            try
+            {
+                PopulateNumberCB();
+                PopulateDateCB();
+                PopulateTotalChargeCB();
+                PopulateDataGrid();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -74,7 +86,25 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                string sSelection = dgInvoices.SelectedIndex.ToString();
+                int iSelection;
+                Int32.TryParse(sSelection, out iSelection);
 
+                sSelection = clsSearchLogicClass.CurrentGridData.Tables[0].Rows[iSelection][0].ToString();
+                Int32.TryParse(sSelection, out iSelection);
+
+                clsSearchLogicClass.InvoiceNumber = iSelection;
+
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -83,6 +113,16 @@ namespace Group6Assignment.Search
         /// <returns></returns>
         public int getInvoiceNumber()
         {
+            try
+            {
+                return clsSearchLogicClass.InvoiceNumber;
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
 
             return 0;
         }
@@ -92,7 +132,19 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateNumberCB()
         {
-
+            try
+            {
+                cbInvoiceNumber.Items.Clear();
+                List<string> comboBoxList = clsSearchLogicClass.PopulateNumberCB();
+                for (int i = 0; i < comboBoxList.Count; i++)
+                {
+                    cbInvoiceNumber.Items.Add(comboBoxList[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -100,7 +152,19 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateDateCB()
         {
-
+            try
+            {
+                cbInvoiceDate.Items.Clear();
+                List<string> comboBoxList = clsSearchLogicClass.PopulateDateCB();
+                for (int i = 0; i < comboBoxList.Count; i++)
+                {
+                    cbInvoiceDate.Items.Add(comboBoxList[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -108,7 +172,19 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateTotalChargeCB()
         {
-
+            try
+            {
+                cbTotalCharge.Items.Clear();
+                List<string> comboBoxList = clsSearchLogicClass.PopulateTotalChargeCB();
+                for (int i = 0; i < comboBoxList.Count; i++)
+                {
+                    cbTotalCharge.Items.Add(comboBoxList[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -116,7 +192,14 @@ namespace Group6Assignment.Search
         /// </summary>
         private void UpdateDataGrid()
         {
-
+            try
+            {
+                dgInvoices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = clsSearchLogicClass.UpdateDataGrid(sInvoice, sDate, sCharge).Tables[0] });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -124,7 +207,15 @@ namespace Group6Assignment.Search
         /// </summary>
         private void PopulateDataGrid()
         {
+            try
+            {
 
+                dgInvoices.SetBinding(ItemsControl.ItemsSourceProperty, new Binding { Source = clsSearchLogicClass.PopulateDataGrid().Tables[0] });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -132,7 +223,16 @@ namespace Group6Assignment.Search
         /// </summary>
         private void UpdateComboBoxes()
         {
+            cbInvoiceNumber.Items.Clear();
+            cbInvoiceDate.Items.Clear();
+            cbTotalCharge.Items.Clear();
 
+            for (int i = 0; i < clsSearchLogicClass.CurrentGridData.Tables[0].Rows.Count; i++)
+            {
+                cbInvoiceNumber.Items.Add(clsSearchLogicClass.CurrentGridData.Tables[0].Rows[i][0]);
+                cbInvoiceDate.Items.Add(clsSearchLogicClass.CurrentGridData.Tables[0].Rows[i][1]);
+                cbTotalCharge.Items.Add(clsSearchLogicClass.CurrentGridData.Tables[0].Rows[i][2]);
+            }
         }
 
         /// <summary>
@@ -142,7 +242,21 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void cbInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            try
+            {
+                if (cbInvoiceNumber.SelectedIndex != -1)
+                {
+                    sInvoice = cbInvoiceNumber.SelectedItem.ToString();
+                    UpdateDataGrid();
+                    UpdateComboBoxes();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -152,7 +266,21 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void cbInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            try
+            {
+                if (cbInvoiceDate.SelectedIndex != -1)
+                {
+                    sDate = cbInvoiceDate.SelectedItem.ToString();
+                    UpdateDataGrid();
+                    UpdateComboBoxes();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -162,7 +290,21 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void cbTotalCharge_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            try
+            {
+                if (cbTotalCharge.SelectedIndex != -1)
+                {
+                    sCharge = cbTotalCharge.SelectedItem.ToString();
+                    UpdateDataGrid();
+                    UpdateComboBoxes();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -172,7 +314,22 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                sInvoice = null;
+                sDate = null;
+                sCharge = null;
+                cbInvoiceDate.SelectedIndex = -1;
+                cbInvoiceDate.SelectedIndex = -1;
+                cbTotalCharge.SelectedIndex = -1;
+                UpdateForm();
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -182,7 +339,18 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                //Set the variable iInvoiceNumber inside clsSearchLogic to -1
+                clsSearchLogicClass.InvoiceNumber = -1; //returns a -1 to show that no selection was made.
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
 
@@ -193,8 +361,17 @@ namespace Group6Assignment.Search
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var window = new wndMain();
-            window.Show();
+            try
+            {
+                this.Hide();
+                e.Cancel = true;
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
 
@@ -206,9 +383,16 @@ namespace Group6Assignment.Search
         /// <param name="sMessage"></param>
         private void HandleError(string sClass, string sMethod, string sMessage)
         {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
 
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("Error.txt", Environment.NewLine +
+                                             "HandleError Exception: " + ex.Message);
+            }
         }
-        
-
     }// end wndSearch
 }
