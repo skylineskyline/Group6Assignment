@@ -49,6 +49,15 @@ namespace Group6Assignment.Main
         /// </summary>
         private Search.wndSearch openSearch;
 
+        
+        /// <summary>
+        /// Variable to check add or edit mode on screen.
+        /// </summary>
+        private bool IsAddOrEditStatus = false;
+
+
+        private clsMainLogic.Invoices currentInvoice;
+
 
         /// <summary>
         /// Constructor
@@ -63,8 +72,6 @@ namespace Group6Assignment.Main
             openSearch = new Search.wndSearch();
 
             StartWindow();
-
-
         }
 
 
@@ -126,7 +133,7 @@ namespace Group6Assignment.Main
                 //var items = mainLogic.GetAllItemDesc();
                 //CinvoiceList.ItemsSource = items;
 
-                RunningWindowStatus();
+                CreateWindowStatus();
 
             }
             catch (Exception)
@@ -146,7 +153,9 @@ namespace Group6Assignment.Main
         {
             try
             {
+                EditWindowStatus();
 
+                LoadItems();
             }
             catch (Exception)
             {
@@ -193,12 +202,8 @@ namespace Group6Assignment.Main
                 if(CinvoiceList.SelectedItem is clsMainLogic.ItemDescInfo selectedItem)
                 {
                     mainLogic.AddItemToInvoice(selectedItem);
-                    UpdateMainItemsInvoceList();
-                    TbTotalCost.Text = String.Format("${0:0.00}", mainLogic.CalculateTotal());
-                    BsaveInvoice.IsEnabled = true;
-                }
-
-                
+                    UpdateMainItemsInvoceList(); 
+                }                
             }
             catch (Exception)
             {
@@ -218,7 +223,13 @@ namespace Group6Assignment.Main
         {
             try
             {
-                mainLogic.SaveInvoice();
+                //Save the new invoice.
+                mainLogic.SaveInvoice(DpInvoiceInsertDate.SelectedDate.Value.Date);
+
+                //Copy current invoice data just added for edit and delete invoice.
+                currentInvoice = mainLogic.CurrentInvoice;
+                
+                AfterSaveWindowStatus();
             }
             catch (Exception)
             {
@@ -226,9 +237,6 @@ namespace Group6Assignment.Main
                 throw;
             }
         }
-
-
-
 
 
         /// <summary>
@@ -242,7 +250,7 @@ namespace Group6Assignment.Main
             {
                 //BaddItem.IsEnabled = false;
                 BaddItem.IsEnabled = CinvoiceList.SelectedItem is clsMainLogic.ItemDescInfo;
-
+                
             }
             catch (Exception)
             {
@@ -257,16 +265,26 @@ namespace Group6Assignment.Main
         /// </summary>
         public void UpdateMainItemsInvoceList()
         {
-            List<clsMainLogic.ItemDescInfo> addedList = mainLogic.GetAddedItem();
+            try
+            {
+                var addedListItems = mainLogic.GetAddedItem();
 
-            var addedListItems = mainLogic.GetAddedItem();
-            dgDisplaytems.ItemsSource = null;
-            dgDisplaytems.ItemsSource = addedListItems;
+                dgDisplaytems.ItemsSource = null;
+                //Update DataGrid list.
+                dgDisplaytems.ItemsSource = addedListItems;
+
+                //Update total cost.
+                TbTotalCost.Text = String.Format("${0:0.00}", mainLogic.CalculateTotal());
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+                      
         }
 
-
-
-        
 
 
         /// <summary>
@@ -294,7 +312,16 @@ namespace Group6Assignment.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            try
+            {
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+            
         }
 
 
@@ -314,6 +341,7 @@ namespace Group6Assignment.Main
                 DpInvoiceInsertDate.Visibility = Visibility.Hidden;
                 CinvoiceList.IsEnabled = false;
                 BaddItem.IsEnabled = false;
+                cClearInvoice.IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -328,10 +356,12 @@ namespace Group6Assignment.Main
         /// <summary>
         /// This method allows user can click Invoice data, item drop-down list.
         /// </summary>
-        private void RunningWindowStatus()
+        private void CreateWindowStatus()
         {
             try
             {
+                currentInvoice = null;
+
                 TbInvoiceNumber.Visibility = Visibility.Visible;
                 TbInvoiceNumber.IsEnabled = true;
                 TbInvoiceNumber.Text = "TBD";
@@ -340,6 +370,12 @@ namespace Group6Assignment.Main
                 DpInvoiceInsertDate.SelectedDate = DateTime.Now;
                 CinvoiceList.IsEnabled = true;
 
+
+                BsaveInvoice.IsEnabled = true;
+                cClearInvoice.IsEnabled = true;
+
+                IsAddOrEditStatus = true;
+
                 LoadItems();
             }
             catch (Exception ex)
@@ -347,11 +383,74 @@ namespace Group6Assignment.Main
                 HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
                     MethodBase.GetCurrentMethod().Name, ex.Message);
             }
-
             
         }
 
 
+        /// <summary>
+        /// This methosd sets up screen status after save Invoice. 
+        /// </summary>
+        private void AfterSaveWindowStatus()
+        {
+            try
+            {
+                TbInvoiceNumber.Text = mainLogic.GetMaxInvoiceNum().ToString();
+                BeditInvoice.IsEnabled = true;
+                BdeleteInvoice.IsEnabled = true;
+                DpInvoiceInsertDate.IsEnabled = false;
+                CinvoiceList.IsEnabled = false;
+                BaddItem.IsEnabled = false;
+                BsaveInvoice.IsEnabled = false;
+                cClearInvoice.IsEnabled = false;
+                IsAddOrEditStatus = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// This method sets up the screen status of edit mode.
+        /// </summary>
+        private void EditWindowStatus()
+        {
+            try
+            {
+                BcreateInvoice.IsEnabled = true;
+                BeditInvoice.IsEnabled = true;
+                BdeleteInvoice.IsEnabled = true;
+                TbInvoiceNumber.Text = "";
+                DpInvoiceInsertDate.IsEnabled = true;
+                CinvoiceList.IsEnabled = true;
+                BsaveInvoice.IsEnabled = true;
+                cClearInvoice.IsEnabled = true;
+                IsAddOrEditStatus = true;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+
+        }
+
+
+        private void DeleteWindowStatus()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
 
         /// <summary>
         /// This method fills out combo box drop-down list from Item list.
@@ -364,9 +463,6 @@ namespace Group6Assignment.Main
                 var loadItems = mainLogic.GetAllItemDesc();
                 CinvoiceList.ItemsSource = loadItems;
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -375,6 +471,39 @@ namespace Group6Assignment.Main
             }
         }
 
+
+
+        /// <summary>
+        /// Clear all current Invoice.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cDeleteItemInList_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //It is for disable delete button in the Item list.
+                if(!IsAddOrEditStatus)
+                {
+                    return;
+                }
+
+                else
+                {
+                    Button button = (Button)sender;
+                    clsMainLogic.ItemDescInfo deleteLineItem = (clsMainLogic.ItemDescInfo)button.DataContext;
+                    mainLogic.DeleteItemInList(deleteLineItem);
+                    UpdateMainItemsInvoceList();
+                }            
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+
+        }
 
 
 
@@ -396,5 +525,9 @@ namespace Group6Assignment.Main
                                              "HandleError Exception: " + ex.Message);
             }
         }
+
+
+
+       
     }
 }

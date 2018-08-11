@@ -26,13 +26,22 @@ namespace Group6Assignment.Main
 
         private clsDataAccess dataAccess;
 
-
+        
         /// <summary>
         /// Variable to hold current ItemDesc list user selected. 
         /// </summary>
         private List<ItemDescInfo> listItemUserSelected = new List<ItemDescInfo>();
 
+
+        /// <summary>
+        /// Variable to hold total cost.
+        /// </summary>
         private decimal totalCostCal = 0;
+        
+
+        
+        public Invoices CurrentInvoice { get; set; }
+
 
         /// <summary>
         /// Constructor
@@ -82,11 +91,15 @@ namespace Group6Assignment.Main
             //listItemUserSelected = new List<ItemDescInfo>();
 
             listItemUserSelected.Add(selectedItem);
-            totalCostCal += selectedItem.Cost;
-            //CalculateTotal(selectedItem);
+            totalCostCal += selectedItem.Cost;            
         }
 
 
+
+        /// <summary>
+        /// This method returns items user added in the main list.
+        /// </summary>
+        /// <returns></returns>
         public List<ItemDescInfo> GetAddedItem()
         {
 
@@ -103,11 +116,67 @@ namespace Group6Assignment.Main
         }
 
 
+        /// <summary>
+        /// //Get max number(lastest Invoice number) of Invoice Number from Invoices table
+        /// </summary>
+        /// <returns></returns>
+        public int GetMaxInvoiceNum()
+        {
+            int iMaxInvoiceNum = 0;
+            dataAccess = new clsDataAccess();
+            DataSet ds = new DataSet();
+            int iRet = 0;
+
+            //Get max number(lastest Invoice number) of Invoice Number from Invoices table
+            ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetMaxInvoiceNumber(), ref iRet);
+            iMaxInvoiceNum = (int)ds.Tables[0].Rows[0][0];
+
+            return iMaxInvoiceNum;
+        }
+
+
+        /// <summary>
+        /// This method saves Invoice items user selected.
+        /// </summary>
+        public void SaveInvoice(DateTime date)
+        {
+            int iMaxInvoiceNum = 0;
+            int iLineNumber = 1;
+            
+            dataAccess = new clsDataAccess();
+            
+            //Insert Invoice number and its date into the Invoices table.
+            dataAccess.ExecuteNonQuery(clsMainSQL.SQLCreateNewInvoice(date));
+
+            //Get max number of Invoice number.
+            iMaxInvoiceNum = GetMaxInvoiceNum();
+            
+            for (int i = 0; i < listItemUserSelected.Count; i++)
+            {
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(iMaxInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
+                iLineNumber++;
+            }
+
+            CurrentInvoice.InvoiceNumber = iMaxInvoiceNum;
+            CurrentInvoice.InvoiceDate = date;
+            CurrentInvoice.TotalCost = CalculateTotal();
+        }
+
+
+        public void DeleteItemInList(ItemDescInfo deleteItems)
+        {
+            listItemUserSelected.Remove(deleteItems);
+            totalCostCal -= deleteItems.Cost;
+        }
+
+
+
+
 
         /// <summary>
         /// This method edits Invoice items user input.
         /// </summary>
-        public void EditInvoice()
+        public void EditInvoice(int curInvoiceNum)
         {
 
         }
@@ -118,17 +187,20 @@ namespace Group6Assignment.Main
         /// </summary>
         public void DeleteInvoice()
         {
-
+            
         }
+
 
 
         /// <summary>
-        /// This method saves Invoice items user selected.
+        /// This method resets all varialbes to initiliazation status.
         /// </summary>
-        public void SaveInvoice()
+        public void Reset()
         {
-
+            listItemUserSelected = null;
+            totalCostCal = 0;
         }
+       
 
 
         /// <summary>

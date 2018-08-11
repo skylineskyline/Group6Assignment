@@ -27,6 +27,24 @@ namespace Group6Assignment.Main
 
 
         /// <summary>
+        /// This method gets max number of Invoice number.
+        /// </summary>
+        /// <returns></returns>
+        public string SQLGetMaxInvoiceNumber()
+        {
+            return "SELECT MAX(InvoiceNum) FROM Invoices";
+        }
+
+
+
+        public string SQLInsertLineItmes(int invoiceNum, int lineItemNum, string itemCode)
+        {
+            return "INSERT INTO Lineitems (InvoiceNum, LineItemNum, ItemCode) VALUES (" + invoiceNum + "," + lineItemNum + ",'" + itemCode + "')";
+        }
+
+
+
+        /// <summary>
         /// This method is search for Items from ItemDesc table
         /// </summary>
         /// <returns></returns>
