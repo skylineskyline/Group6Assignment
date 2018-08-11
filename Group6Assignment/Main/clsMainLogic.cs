@@ -39,7 +39,9 @@ namespace Group6Assignment.Main
         private decimal totalCostCal = 0;
         
 
-        
+        /// <summary>
+        /// Variable and Property to hold current Invocie.
+        /// </summary>
         public Invoices CurrentInvoice { get; set; }
 
 

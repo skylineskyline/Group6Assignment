@@ -526,8 +526,6 @@ namespace Group6Assignment.Main
             }
         }
 
-
-
-       
+    
     }
 }
