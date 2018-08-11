@@ -30,8 +30,9 @@ namespace Group6Assignment.Search
         /// </summary>
 		public clsSearchSQL()
         {
-            sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString() + "/Invoice.mdb";
+            sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetCurrentDirectory() + "\\Invoice.mdb";
         }
+
 
         /// <summary>
         /// This method returns all invoices from the DataBase.
@@ -158,34 +159,35 @@ namespace Group6Assignment.Search
         /// <returns>Returns a DataSet that contains the data from the SQL statement.</returns>
         public DataSet ExecuteSQLStatement(string sSQL) // removed the reference int
         {
-            try
-            {
-                //Create a new DataSet
-                DataSet ds = new DataSet();
+        try
+        {
+            //Create a new DataSet
+            DataSet ds = new DataSet();
 
-                using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+            using (OleDbConnection conn = new OleDbConnection(sConnectionString))
+            {
+                using (OleDbDataAdapter adapter = new OleDbDataAdapter())
                 {
-                    using (OleDbDataAdapter adapter = new OleDbDataAdapter())
-                    {
 
-                        //Open the connection to the database
-                        conn.Open();
+                    //Open the connection to the database
+                    conn.Open();
 
-                        //Add the information for the SelectCommand using the SQL statement and the connection object
-                        adapter.SelectCommand = new OleDbCommand(sSQL, conn);
-                        adapter.SelectCommand.CommandTimeout = 0;
+                    //Add the information for the SelectCommand using the SQL statement and the connection object
+                    adapter.SelectCommand = new OleDbCommand(sSQL, conn);
+                    adapter.SelectCommand.CommandTimeout = 0;
 
-                        //Fill up the DataSet with data
-                        adapter.Fill(ds);
-                    }
+                    //Fill up the DataSet with data
+                    adapter.Fill(ds);
                 }
+            }
 
-                return ds;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
+            //return the DataSet
+            return ds;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        }
         }
 
         /// <summary>
