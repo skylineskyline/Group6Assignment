@@ -57,6 +57,12 @@ namespace Group6Assignment.Main
 
 
         /// <summary>
+        /// Variable to check delete mode or not.
+        /// </summary>
+        private bool IsDeleteItem = false;
+
+
+        /// <summary>
         /// Variable to hold just saved the invoice by user.
         /// </summary>
         private clsMainLogic.Invoices currentInvoice;
@@ -235,23 +241,37 @@ namespace Group6Assignment.Main
         private void BsaveInvoice_Click(object sender, RoutedEventArgs e)
         {
             try
-            {                
-                //If current save mode is add mode
-                if (!IsAddOrEditStatus)
+            {  
+                if(mainLogic.GetAddedItem().Count == 0)
                 {
-                    //Save the new invoice.
-                    mainLogic.SaveInvoice(DpInvoiceInsertDate.SelectedDate.Value.Date);
+                    MessageBox.Show("You must add an item at least in order to create an Invoice.", "Message", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
 
-                //If current save mode is edit mode
                 else
                 {
-                    mainLogic.EditInvoice(currentInvoice.InvoiceNumber, DpInvoiceInsertDate.SelectedDate.Value.Date);
+                    //false: add mode, true: edit mode
+                    //If current save mode is add mode
+                    if (!IsAddOrEditStatus)
+                    {
+                        //Save the new invoice.
+                        mainLogic.SaveInvoice(DpInvoiceInsertDate.SelectedDate.Value.Date);
+                    }
+
+                    //If current save mode is edit mode
+                    else
+                    {
+                        mainLogic.EditInvoice(currentInvoice.InvoiceNumber, DpInvoiceInsertDate.SelectedDate.Value.Date);
+                    }
+
+                    //Copy current invoice data just added for edit and delete invoice.
+                    currentInvoice = mainLogic.CurrentInvoice;
+                    AfterSaveWindowStatus();
                 }
                 
-                //Copy current invoice data just added for edit and delete invoice.
-                currentInvoice = mainLogic.CurrentInvoice;
-                AfterSaveWindowStatus();
+                
+                
+               
 
             }
             catch (Exception)
@@ -376,14 +396,19 @@ namespace Group6Assignment.Main
                 TbInvoiceNumber.Text = "TBD";
 
                 DpInvoiceInsertDate.Visibility = Visibility.Visible;
+                DpInvoiceInsertDate.IsEnabled = true;
                 DpInvoiceInsertDate.SelectedDate = DateTime.Now;
                 CinvoiceList.Visibility = Visibility.Visible;
                 BaddItem.Visibility = Visibility.Visible;
+                BcreateInvoice.IsEnabled = false;
+                BeditInvoice.IsEnabled = false;
+                BdeleteInvoice.IsEnabled = false;
                 CinvoiceList.IsEnabled = true;
                 BsaveInvoice.IsEnabled = true;
                 cClearInvoice.IsEnabled = true;
 
-                IsAddOrEditStatus = false;
+                IsAddOrEditStatus = false; //false: add mode, true: edit mode
+                IsDeleteItem = true; //false: Can't delete
 
                 LoadItems();
                 UpdateMainItemsInvoceList();
@@ -405,6 +430,7 @@ namespace Group6Assignment.Main
             try
             {
                 TbInvoiceNumber.Text = mainLogic.GetMaxInvoiceNum().ToString();
+                BcreateInvoice.IsEnabled = true;
                 BeditInvoice.IsEnabled = true;
                 BdeleteInvoice.IsEnabled = true;
                 DpInvoiceInsertDate.IsEnabled = false;
@@ -413,6 +439,7 @@ namespace Group6Assignment.Main
                 BsaveInvoice.IsEnabled = false;
                 cClearInvoice.IsEnabled = false;
                 IsAddOrEditStatus = false;
+                IsDeleteItem = false;
             }
             catch (Exception ex)
             {
@@ -429,16 +456,17 @@ namespace Group6Assignment.Main
         private void EditWindowStatus()
         {
             try
-            {
-                BcreateInvoice.IsEnabled = true;
-                BeditInvoice.IsEnabled = true;
-                BdeleteInvoice.IsEnabled = true;
+            {                
+                BcreateInvoice.IsEnabled = false;
+                BeditInvoice.IsEnabled = false;
+                BdeleteInvoice.IsEnabled = false;
                 TbInvoiceNumber.Text = "";
                 DpInvoiceInsertDate.IsEnabled = true;
                 CinvoiceList.IsEnabled = true;
                 BsaveInvoice.IsEnabled = true;
                 cClearInvoice.IsEnabled = true;
                 IsAddOrEditStatus = true;
+                IsDeleteItem = true;
             }
             catch (Exception ex)
             {
@@ -522,10 +550,8 @@ namespace Group6Assignment.Main
             try
             {
                 //It is disable delete('X') button in the Item list.
-                if(!IsAddOrEditStatus)
-                {
+                if (!IsDeleteItem)               
                     return;
-                }
 
                 else
                 {
@@ -533,7 +559,7 @@ namespace Group6Assignment.Main
                     clsMainLogic.ItemDescInfo deleteLineItem = (clsMainLogic.ItemDescInfo)button.DataContext;
                     mainLogic.DeleteItemInList(deleteLineItem);
                     UpdateMainItemsInvoceList();
-                }            
+                }           
 
             }
             catch (Exception ex)
