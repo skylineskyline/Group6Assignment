@@ -341,15 +341,12 @@ namespace Group6Assignment.Search
         {
             try
             {
-                //Set the variable iInvoiceNumber inside clsSearchLogic to -1
-                clsSearchLogicClass.InvoiceNumber = -1; //returns a -1 to show that no selection was made.
-                this.Hide();
+                this.Close();
             }
             catch (Exception ex)
             {
-                // Top level method to handle the error.
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -363,8 +360,8 @@ namespace Group6Assignment.Search
         {
             try
             {
-                this.Hide();
-                e.Cancel = true;
+                var window = new Main.wndMain();
+                window.Show();
             }
             catch (Exception ex)
             {
