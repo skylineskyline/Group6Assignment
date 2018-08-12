@@ -6,7 +6,6 @@
 *
 ***************************************************************************************************/
 
-using Group6Assignment.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +20,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using System.Collections.ObjectModel; //Must be added to use ObservableCollection
+using System.ComponentModel;          //Must be added for interface INotifyPropertyChanged
+using System.Reflection; //For exception handling
+using Group6Assignment.Main;
 
 namespace Group6Assignment.Items
 {
@@ -35,14 +38,16 @@ namespace Group6Assignment.Items
         /// Get Items DataGrid data.
         /// </summary>
         IEnumerable<clsItem> itemsData;
+
         /// <summary>
         /// An object of clsItemsLogic
         /// </summary>
         clsItemsLogic objItemsLogic;
 
-
-
-
+        /// <summary>
+        /// Tells if the user is deleting a row.
+        /// </summary>
+        bool IsDeleting = false;
         #endregion
 
         #region Constructor
@@ -53,19 +58,80 @@ namespace Group6Assignment.Items
         public wndItems()
         {
             InitializeComponent();
+
+            objItemsLogic = new clsItemsLogic();
         }
         #endregion
 
         #region Event handler
-        ///// <summary>
-        ///// Called when the form is loaded.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void wndItemsBinding_Loaded(object sender, RoutedEventArgs e)
-        //{
+        /// <summary>
+        /// When the wndItems window 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void wndItemsBinding_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
 
-        //}
+        /// <summary>
+        /// Only allows letters to be input
+        /// </summary>
+        /// <param name="sender">sent object</param>
+        /// <param name="e">key argument</param>
+        private void txtLetterInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                //Only allow letters to be entered
+                if (!(e.Key >= Key.A && e.Key <= Key.Z))
+                {
+                    //Allow the user to use the backspace, delete, tab, enter and space
+                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Enter || e.Key == Key.Space))
+                    {
+                        //No other keys allowed besides numbers, backspace, delete, tab, and enter
+                        e.Handled = true;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Only allows numbers to be input
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtDecimalInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (!((e.Key >= Key.D0 && e.Key <= Key.D9) || e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9))
+                {
+                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Enter || e.Key == Key.OemPeriod))
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
 
         /// <summary>
         /// If this AddItem button is clicked, it will check if that item already exists or not.
@@ -77,7 +143,16 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
-            //gAdd.Visibility = Visibility.Visible;
+            try
+            {
+                gAdd.Visibility = Visibility.Visible;
+                gEdit.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -90,7 +165,28 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnEditItem_Click(object sender, RoutedEventArgs e)
         {
-            //gEdit.Visibility = Visibility.Visible;
+            try
+            {
+                //Get a selected row's object from a datagrid
+                clsItem objSelectedItem = (clsItem)dgItemDescTable.SelectedItem;
+
+                if (objSelectedItem != null)
+                {
+                    gAdd.Visibility = Visibility.Collapsed;
+                    gEdit.Visibility = Visibility.Visible;
+
+                    txtEditItemCode.Text = objSelectedItem.ItemCode;
+                    txtEditItemDesc.Text = objSelectedItem.ItemDesc;
+                    txtEditCost.Text = objSelectedItem.Cost.ToString();
+                }
+                else
+                    MessageBox.Show("Editing item is not selected in a datagrid.");
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -103,7 +199,36 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            //gDelete.Visibility = Visibility.Visible;
+            try
+            {
+                gAdd.Visibility = Visibility.Collapsed;
+                gEdit.Visibility = Visibility.Collapsed;
+
+                //Get a selected row's object from a datagrid
+                clsItem objSelectedItem = (clsItem)dgItemDescTable.SelectedItem;
+
+                if (objSelectedItem != null)
+                {
+                    MessageBoxResult userAnswer = MessageBox.Show("Are you sure to delete this item?", "Delete Confirmation", MessageBoxButton.YesNo);
+                    if (userAnswer == MessageBoxResult.Yes)
+                    {
+                        IsDeleting = true;
+                        objItemsLogic.DeleteItem_byRow(objSelectedItem.ItemCode);
+
+                        dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+                        IsDeleting = false;
+                    }
+
+                    return;
+                }
+                else
+                    MessageBox.Show("Deleting item is not selected in a datagrid.");
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -115,7 +240,32 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnAddSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
 
+                MessageBoxResult userAnswer = MessageBox.Show("Are you sure to add this item?", "Add Confirmation", MessageBoxButton.YesNo);
+                if (userAnswer == MessageBoxResult.Yes)
+                {                  
+                    txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
+                    objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
+                }
+
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+                //objItemsLogic.ColorRow(dgItemDescTable, txtAddItemCode.Text);
+
+                RefreshAdd();
+                gAdd.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -128,12 +278,16 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnAddCancel_Click(object sender, RoutedEventArgs e)
         {
-            //TextBox txtContent = (TextBox)sender;
-            //objItemsLogic.Clear(txtContent);
-
-            //objItemsLogic.Clear(txtAddItemCode);
-            //objItemsLogic.Clear(txtAddItemDesc);
-            //objItemsLogic.Clear(txtAddCost);
+            try
+            {
+                RefreshAdd();
+                gAdd.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -145,7 +299,31 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnEditSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
 
+                MessageBoxResult userAnswer = MessageBox.Show("Are you sure to edit this item?", "Edit Confirmation", MessageBoxButton.YesNo);
+                if (userAnswer == MessageBoxResult.Yes)
+                {                   
+                    txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
+                    objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
+                }
+
+                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+
+                RefreshEdit();
+                gEdit.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -158,32 +336,16 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnEditCancel_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        /// <summary>
-        /// It will save changes and reflect the change to the DataGrid when the user deletes an item,
-        /// hide a grid for deleting an item
-        /// and enable "Add/Edit/Delete an item" buttons.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDeleteSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// When the user clicks "Delete an item" button but decides not to do it,
-        /// the user clicks this "Cancel" button.
-        /// It will clear any data that the user entered in textboxes
-        /// and enable "Add/Edit/Delete an item" buttons.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDeleteCancel_Click(object sender, RoutedEventArgs e)
-        {
-
+            try
+            {
+                RefreshEdit();
+                gEdit.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -194,12 +356,37 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void btnItemCancel_Click(object sender, RoutedEventArgs e)
         {
-           
-            this.Close();
-            
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        ///// <summary>
+        ///// It will be triggered when the Items window is closed.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void ItemsWindow_Closed(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var window = new wndMain();
+        //        window.Show();
 
+        //        //this.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
 
 
         /// <summary>
@@ -209,11 +396,75 @@ namespace Group6Assignment.Items
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var window = new wndMain();
-            window.Show();
-           
+            try
+            {
+                var window = new Main.wndMain();
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Clear every textbox in an Add Grid
+        /// </summary>
+        public void RefreshAdd()
+        {
+            try
+            {
+                txtAddItemCode.Clear();
+                txtAddItemDesc.Clear();
+                txtAddCost.Clear();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
+        /// <summary>
+        /// Clear every textbox in an Edit Grid
+        /// </summary>
+        public void RefreshEdit()
+        {          
+            try
+            {
+                txtEditItemCode.Clear();
+                txtEditItemDesc.Clear();
+                txtEditCost.Clear();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+        }
+        #endregion
+
+        #region Exception Handler
+        /// <summary>
+        /// Handles the error
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
+        }
         #endregion
     }
 }
