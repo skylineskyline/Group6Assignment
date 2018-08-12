@@ -42,12 +42,12 @@ namespace Group6Assignment.Main
         /// <summary>
         /// Variable to open Items window.
         /// </summary>
-        private Items.wndItems openItems;
+        private wndItems openItems;
 
         /// <summary>
         /// Variable to open search window.
         /// </summary>
-        private Search.wndSearch openSearch;
+        private wndSearch openSearch;
 
         
         /// <summary>
@@ -74,11 +74,11 @@ namespace Group6Assignment.Main
         public wndMain()
         {
             InitializeComponent();
-            this.Closing += ClosingWindowForm;
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-            
-            openItems = new Items.wndItems();
-            openSearch = new Search.wndSearch();
+
+            openItems = new wndItems();
+            openSearch = new wndSearch();
 
             StartWindow();
         }
@@ -93,9 +93,16 @@ namespace Group6Assignment.Main
         {
             try
             {
-                var windowItem = new wndItems();
-                windowItem.Show();
-                this.Close();
+                //var windowItem = new wndItems();                
+                //windowItem.Show();
+                //this.Close();
+
+                this.Hide();
+                openItems = new wndItems();
+                openItems.ShowDialog();
+                this.Show();
+
+
             }
             catch (Exception)
             {
@@ -138,6 +145,7 @@ namespace Group6Assignment.Main
         {
             try
             {
+                InitialInstance();
                 CreateWindowStatus();
             }
             catch (Exception)
@@ -269,16 +277,24 @@ namespace Group6Assignment.Main
                     AfterSaveWindowStatus();
                 }
                 
-                
-                
-               
-
             }
             catch (Exception)
             {
 
                 throw;
             }
+        }
+
+
+        /// <summary>
+        /// Event handler method that is just cancel Invoice
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bCancelInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            StartWindow();
+            LoadInvocie();
         }
 
 
@@ -327,25 +343,6 @@ namespace Group6Assignment.Main
         }
 
 
-
-        /// <summary>
-        /// This event handler closes window form.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ClosingWindowForm(object sender, CancelEventArgs e)
-        {
-            try
-            {               
-                    //e.Cancel = true;              
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
-                    MethodBase.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
        
 
 
@@ -363,9 +360,11 @@ namespace Group6Assignment.Main
                 DpInvoiceInsertDate.Visibility = Visibility.Hidden;
                 CinvoiceList.Visibility = Visibility.Hidden;
                 BaddItem.Visibility = Visibility.Hidden;
+                BcreateInvoice.IsEnabled = true;
                 CinvoiceList.IsEnabled = false;
                 BaddItem.IsEnabled = false;
-                cClearInvoice.IsEnabled = false;
+                BsaveInvoice.IsEnabled = false;
+                bCancelInvoice.IsEnabled = false;
                 BeditInvoice.IsEnabled = false;
                 BdeleteInvoice.IsEnabled = false;
             }
@@ -377,6 +376,15 @@ namespace Group6Assignment.Main
 
         }
 
+        /// <summary>
+        /// This method intializes mainLogic and currentInvoice.
+        /// </summary>
+        private void InitialInstance ()
+        {
+            ////Create the new Invoice.
+            //mainLogic = new clsMainLogic(null);
+            //currentInvoice = new clsMainLogic.Invoices();
+        }
 
 
         /// <summary>
@@ -389,7 +397,6 @@ namespace Group6Assignment.Main
                 //Create the new Invoice.
                 mainLogic = new clsMainLogic(null);
                 currentInvoice = new clsMainLogic.Invoices();
-                
 
                 TbInvoiceNumber.Visibility = Visibility.Visible;
                 TbInvoiceNumber.IsEnabled = true;
@@ -405,7 +412,7 @@ namespace Group6Assignment.Main
                 BdeleteInvoice.IsEnabled = false;
                 CinvoiceList.IsEnabled = true;
                 BsaveInvoice.IsEnabled = true;
-                cClearInvoice.IsEnabled = true;
+                bCancelInvoice.IsEnabled = true;
 
                 IsAddOrEditStatus = false; //false: add mode, true: edit mode
                 IsDeleteItem = true; //false: Can't delete
@@ -437,7 +444,7 @@ namespace Group6Assignment.Main
                 CinvoiceList.IsEnabled = false;
                 BaddItem.IsEnabled = false;
                 BsaveInvoice.IsEnabled = false;
-                cClearInvoice.IsEnabled = false;
+                bCancelInvoice.IsEnabled = false;
                 IsAddOrEditStatus = false;
                 IsDeleteItem = false;
             }
@@ -464,7 +471,7 @@ namespace Group6Assignment.Main
                 DpInvoiceInsertDate.IsEnabled = true;
                 CinvoiceList.IsEnabled = true;
                 BsaveInvoice.IsEnabled = true;
-                cClearInvoice.IsEnabled = true;
+                bCancelInvoice.IsEnabled = true;
                 IsAddOrEditStatus = true;
                 IsDeleteItem = true;
             }
@@ -473,9 +480,17 @@ namespace Group6Assignment.Main
                 HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
                     MethodBase.GetCurrentMethod().Name, ex.Message);
             }
-
         }
 
+
+
+        private void ClearInvoice()
+        {
+           
+
+            StartWindow();
+            LoadInvocie();
+        }
 
 
         /// <summary>
@@ -579,15 +594,15 @@ namespace Group6Assignment.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Application.Current.Shutdown();
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
-                    MethodBase.GetCurrentMethod().Name, ex.Message);
-            }
+            //try
+            //{
+            //    Application.Current.Shutdown();
+            //}
+            //catch (Exception ex)
+            //{
+            //    HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+            //        MethodBase.GetCurrentMethod().Name, ex.Message);
+            //}
 
         }
 
@@ -612,6 +627,5 @@ namespace Group6Assignment.Main
             }
         }
 
-    
     }
 }

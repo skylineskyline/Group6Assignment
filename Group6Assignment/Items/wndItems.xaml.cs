@@ -58,7 +58,7 @@ namespace Group6Assignment.Items
         public wndItems()
         {
             InitializeComponent();
-
+            
             objItemsLogic = new clsItemsLogic();
         }
         #endregion
@@ -372,7 +372,7 @@ namespace Group6Assignment.Items
         ///// </summary>
         ///// <param name="sender"></param>
         ///// <param name="e"></param>
-        //private void ItemsWindow_Closed(object sender, EventArgs e)
+        //private void ItemsWindow_Closed(object sender, System.ComponentModel.CancelEventArgs e)
         //{
         //    try
         //    {
@@ -389,24 +389,24 @@ namespace Group6Assignment.Items
         //}
 
 
-        /// <summary>
-        /// It will be triggered when the Items window is closed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                var window = new Main.wndMain();
-                window.Show();
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
+        ///// <summary>
+        ///// It will be triggered when the Items window is closed.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    try
+        //    {
+        //        var window = new Main.wndMain();
+        //        window.Show();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
         #endregion
 
         #region Methods
