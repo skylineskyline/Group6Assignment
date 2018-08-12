@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Group6Assignment.Items"
         mc:Ignorable="d"
-        Title="wndItems" Height="540" Width="620" Loaded="wndItemsBinding_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen"> 
+        Title="wndItems" Height="540" Width="620" Loaded="wndItemsBinding_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -29,10 +29,31 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="spBottomLeft" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Top">
-                <Button x:Name="btnAddItem" Content="Add an item" Margin="10" FontSize="18" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnAddItem_Click"/>
-                <Button x:Name="btnEditItem" Content="Edit an item" Margin="10" FontSize="18" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnEditItem_Click"/>
-                <Button x:Name="btnDeleteItem" Content="Delete an item" Margin="10" FontSize="18" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnDeleteItem_Click"/>
+            <StackPanel x:Name="spBottomLeft" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,0,436,0">
+                <Button x:Name="btnAddItem" Content="Add an item" Margin="10" FontSize="18" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnAddItem_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFE4E5F3" Offset="0.121"/>
+                            <GradientStop Color="#FF2936EE" Offset="0.961"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnEditItem" Content="Edit an item" Margin="10" FontSize="18" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnEditItem_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFE4E5F3" Offset="0.121"/>
+                            <GradientStop Color="#FF2936EE" Offset="0.961"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnDeleteItem" Content="Delete selected item" Margin="10" FontSize="16" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnDeleteItem_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFE4E5F3" Offset="0.121"/>
+                            <GradientStop Color="#FF2936EE" Offset="0.961"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
                 <Button x:Name="btnItemCancel" Content="Cancel" Margin="10" FontSize="18" HorizontalAlignment="Center" Width="150" Height="40" VerticalAlignment="Center" Click="btnItemCancel_Click" FontWeight="Bold" Background="#FFABA9A9"/>
             </StackPanel>
 
@@ -56,7 +77,7 @@
                     <TextBox x:Name="txtAddCost" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtDecimalInput_PreviewKeyDown"/>
                 </StackPanel>
 
-                <Button x:Name="btnAddSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnAddSave_Click"/>
+                <Button x:Name="btnAddSave" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnAddSave_Click"/>
                 <Button x:Name="btnAddCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="185,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnAddCancel_Click"/>
             </Grid>
 
@@ -75,33 +96,13 @@
 
                 <StackPanel x:Name="spEditEnterInfo" Grid.Column="1" Margin="0,0,0,50">
                     <Label x:Name="lblEditTitle" Content="Edit an item" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,3,0,0" FontSize="16" FontWeight="Bold" RenderTransformOrigin="2.028,0.286"/>
-                    <TextBox x:Name="txtEditItemCode" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtLetterInput_PreviewKeyDown"/>
+                    <TextBox x:Name="txtEditItemCode" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtLetterInput_PreviewKeyDown" IsReadOnly="True"/>
                     <TextBox x:Name="txtEditItemDesc" Height="75" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtLetterInput_PreviewKeyDown"/>
                     <TextBox x:Name="txtEditCost" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="16" Width="300" PreviewKeyDown="txtDecimalInput_PreviewKeyDown"/>
                 </StackPanel>
 
-                <Button x:Name="btnEditSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnEditSave_Click"/>
+                <Button x:Name="btnEditSave" Content="Edit" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnEditSave_Click"/>
                 <Button x:Name="btnEditCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="185,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnEditCancel_Click"/>
-            </Grid>
-
-
-            <Grid x:Name="gDelete" Grid.Column="1" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel x:Name="spDeleteLabels" Margin="0,40,0,50">
-                    <Label x:Name="lblDeleteItemCode" Content="ItemCode: " HorizontalAlignment="Center" Margin="10,0,0,5" FontSize="16"/>
-                </StackPanel>
-
-                <StackPanel x:Name="spDeleteEnterInfo" Grid.Column="1" Margin="0,0,0,50">
-                    <Label x:Name="lblDeleteTitle" Content="Delete an item" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,5,0,0" FontSize="16" FontWeight="Bold" RenderTransformOrigin="2.028,0.286"/>
-                    <TextBox x:Name="txtDeleteItemCode" Height="25" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,10,0,0" FontSize="16" Width="300" PreviewKeyDown="txtLetterInput_PreviewKeyDown"/>
-                </StackPanel>
-
-                <Button x:Name="btnDeleteSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="65,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnDeleteSave_Click"/>
-                <Button x:Name="btnDeleteCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="185,205,0,0" VerticalAlignment="Top" Width="75" FontSize="16" Click="btnDeleteCancel_Click"/>
             </Grid>
 
         </Grid>

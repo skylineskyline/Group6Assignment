@@ -43,6 +43,11 @@ namespace Group6Assignment.Items
         /// An object of clsItemsLogic
         /// </summary>
         clsItemsLogic objItemsLogic;
+
+        /// <summary>
+        /// Tells if the user is deleting a row.
+        /// </summary>
+        bool IsDeleting = false;
         #endregion
 
         #region Constructor
@@ -142,7 +147,6 @@ namespace Group6Assignment.Items
             {
                 gAdd.Visibility = Visibility.Visible;
                 gEdit.Visibility = Visibility.Collapsed;
-                gDelete.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -163,9 +167,20 @@ namespace Group6Assignment.Items
         {
             try
             {
-                gAdd.Visibility = Visibility.Collapsed;
-                gEdit.Visibility = Visibility.Visible;
-                gDelete.Visibility = Visibility.Collapsed;
+                //Get a selected row's object from a datagrid
+                clsItem objSelectedItem = (clsItem)dgItemDescTable.SelectedItem;
+
+                if (objSelectedItem != null)
+                {
+                    gAdd.Visibility = Visibility.Collapsed;
+                    gEdit.Visibility = Visibility.Visible;
+
+                    txtEditItemCode.Text = objSelectedItem.ItemCode;
+                    txtEditItemDesc.Text = objSelectedItem.ItemDesc;
+                    txtEditCost.Text = objSelectedItem.Cost.ToString();
+                }
+                else
+                    MessageBox.Show("Editing item is not selected in a datagrid.");
             }
             catch (Exception ex)
             {
@@ -188,7 +203,26 @@ namespace Group6Assignment.Items
             {
                 gAdd.Visibility = Visibility.Collapsed;
                 gEdit.Visibility = Visibility.Collapsed;
-                gDelete.Visibility = Visibility.Visible;
+
+                //Get a selected row's object from a datagrid
+                clsItem objSelectedItem = (clsItem)dgItemDescTable.SelectedItem;
+
+                if (objSelectedItem != null)
+                {
+                    MessageBoxResult userAnswer = MessageBox.Show("Are you sure to delete this item?", "Delete Confirmation", MessageBoxButton.YesNo);
+                    if (userAnswer == MessageBoxResult.Yes)
+                    {
+                        IsDeleting = true;
+                        objItemsLogic.DeleteItem_byRow(objSelectedItem.ItemCode);
+
+                        dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
+                        IsDeleting = false;
+                    }
+
+                    return;
+                }
+                else
+                    MessageBox.Show("Deleting item is not selected in a datagrid.");
             }
             catch (Exception ex)
             {
@@ -208,14 +242,15 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
+
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to add this item?", "Add Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
                 {
-                    if ((txtAddItemCode.Text == "") || (txtAddItemDesc.Text == "") || (txtAddCost.Text == ""))
-                    {
-                        MessageBox.Show("Please fill out all of textboxes.");
-                        return;
-                    }
                     txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
                 }
@@ -266,14 +301,15 @@ namespace Group6Assignment.Items
         {
             try
             {
+                if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
+                {
+                    MessageBox.Show("Please fill out all of textboxes.");
+                    return;
+                }
+
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to edit this item?", "Edit Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
                 {
-                    if ((txtEditItemCode.Text == "") || (txtEditItemDesc.Text == "") || (txtEditCost.Text == ""))
-                    {
-                        MessageBox.Show("Please fill out all of textboxes.");
-                        return;
-                    }
                     txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
                 }
@@ -304,63 +340,6 @@ namespace Group6Assignment.Items
             {
                 RefreshEdit();
                 gEdit.Visibility = Visibility.Collapsed;
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// It will save changes and reflect the change to the DataGrid when the user deletes an item,
-        /// hide a grid for deleting an item
-        /// and enable "Add/Edit/Delete an item" buttons.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDeleteSave_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                MessageBoxResult userAnswer = MessageBox.Show("Are you sure to delete this item?", "Delete Confirmation", MessageBoxButton.YesNo);
-                if (userAnswer == MessageBoxResult.Yes)
-                {
-                    if (txtDeleteItemCode.Text == "")
-                    {
-                        MessageBox.Show("Please fill out a textbox.");
-                        return;
-                    }
-                    txtDeleteItemCode.Text = txtDeleteItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
-                    objItemsLogic.DeleteItem_byRow(txtDeleteItemCode.Text);
-                }
-
-                dgItemDescTable.ItemsSource = objItemsLogic.GetItemCollection();
-
-                RefreshDelete();
-                gDelete.Visibility = Visibility.Collapsed;
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// When the user clicks "Delete an item" button but decides not to do it,
-        /// the user clicks this "Cancel" button.
-        /// It will clear any data that the user entered in textboxes
-        /// and enable "Add/Edit/Delete an item" buttons.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDeleteCancel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                RefreshDelete();
-                gDelete.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -453,28 +432,12 @@ namespace Group6Assignment.Items
         /// Clear every textbox in an Edit Grid
         /// </summary>
         public void RefreshEdit()
-        {          
+        {
             try
             {
                 txtEditItemCode.Clear();
                 txtEditItemDesc.Clear();
                 txtEditCost.Clear();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-            }
-        }
-
-        /// <summary>
-        /// Clear a textbox in a Delete Grid
-        /// </summary>
-        public void RefreshDelete()
-        {         
-            try
-            {
-                txtDeleteItemCode.Clear();
             }
             catch (Exception e)
             {

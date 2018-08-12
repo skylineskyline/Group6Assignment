@@ -258,7 +258,7 @@ namespace Group6Assignment.Items
                         count++;
                     }
                 }
-              
+
                 if (count != 0) //If the item exists in an inventory
                 {
                     List<string> existingInInvoice = GetItemCodeList_LineItems();
@@ -289,10 +289,6 @@ namespace Group6Assignment.Items
 
                         MessageBox.Show("Cannot delete this item. It is used on invoice " + lineItemCode);
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Nonexistent item");
                 }
             }
             catch (Exception e)
@@ -328,107 +324,6 @@ namespace Group6Assignment.Items
                                     MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
         }
-
-        ///// <summary>
-        ///// When the user adds/edits/deletes an item and clicks "Save" button,
-        ///// this method updates DataGrid.
-        ///// </summary>
-        //public void UpdateDataGrid()
-        //{
-        //    try
-        //    {
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Validate user input in a textbox.
-        ///// </summary>
-        ///// <param name="sInput"></param>
-        ///// <returns></returns>
-        //public bool ValidateInput(string sInput)
-        //{
-        //    try
-        //    {
-        //        bool bValid = false;
-        //        return bValid;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// When the user adds/edits/deletes an item and clicks "Cancel" button,
-        ///// this method clears data in textbox.
-        ///// </summary>
-        //public void Clear(TextBox txt)
-        //{          
-        //    try
-        //    {
-        //        txt.Text = "";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-        //                            MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Enable a button.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //public void EnableButton(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button btn = (Button)sender;
-        //        btn.IsEnabled = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Disable a button.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //public void DisableButton(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button btn = (Button)sender;
-        //        btn.IsEnabled = false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
-        //    }
-        //}
-
-        //public void Visible()
-        //{
-
-        //}
-        //public void Hidden()
-        //{
-
-        //}
-
         #endregion
 
         #region Exception Handler
