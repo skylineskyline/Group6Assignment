@@ -594,15 +594,15 @@ namespace Group6Assignment.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    Application.Current.Shutdown();
-            //}
-            //catch (Exception ex)
-            //{
-            //    HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
-            //        MethodBase.GetCurrentMethod().Name, ex.Message);
-            //}
+            try
+            {
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name,
+                    MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
 
         }
 
