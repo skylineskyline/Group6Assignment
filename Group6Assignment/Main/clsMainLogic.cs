@@ -26,12 +26,14 @@ namespace Group6Assignment.Main
 
         private clsDataAccess dataAccess;
 
-        
+
         /// <summary>
         /// Variable to hold current ItemDesc list user selected. 
         /// </summary>
-        private List<ItemDescInfo> listItemUserSelected = new List<ItemDescInfo>();
+        private List<ItemDescInfo> listItemUserSelected; 
 
+
+        private List<LineItmes> listLineItmes;
 
         /// <summary>
         /// Variable to hold total cost.
@@ -48,10 +50,34 @@ namespace Group6Assignment.Main
         /// <summary>
         /// Constructor
         /// </summary>
-        public clsMainLogic()
+        public clsMainLogic(Invoices newInvoice)
         {
-            clsMainSQL = new clsMainSQL();
+            
+            try
+            {
+                clsMainSQL = new clsMainSQL();            
+                
+                //If newInvoice is null, creat the new invoice
+                if (newInvoice == null)
+                {
+                    CurrentInvoice = new Invoices();
+                    //Greate the new invoice's list.
+                    listItemUserSelected = new List<ItemDescInfo>();
+                }
 
+                else
+                {
+                    CurrentInvoice = new Invoices();                    
+                    CurrentInvoice.InvoiceNumber = newInvoice.InvoiceNumber;
+                    CurrentInvoice.InvoiceDate = newInvoice.InvoiceDate;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
@@ -85,13 +111,44 @@ namespace Group6Assignment.Main
         }
 
 
+
+        /// <summary>
+        /// Get LineItems.
+        /// </summary>
+        public void GetLineItmes(int invoiceNum)
+        {
+            //listLineItmes = new List<LineItmes>();            
+            listItemUserSelected = new List<ItemDescInfo>();
+            
+            dataAccess = new clsDataAccess();
+            DataSet ds = new DataSet();
+            int iRet = 0;
+
+            ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetCurrentInvoiceLineItems(invoiceNum), ref iRet);
+            
+            foreach (DataRow datas in ds.Tables[0].Rows)
+            {
+                listItemUserSelected.Add(new ItemDescInfo()
+                {
+                    ItemCode = (string)datas[0],
+                    ItemDesc = (string)datas[1],
+                    Cost = (decimal)datas[2]
+                });
+            }
+
+            totalCostCal = 0;
+            foreach (var cost in listItemUserSelected)
+            {
+                totalCostCal += cost.Cost;
+            }
+        }
+
+
         /// <summary>
         /// This method adds items in datagrid.
         /// </summary>
         public void AddItemToInvoice(ItemDescInfo selectedItem)
         {
-            //listItemUserSelected = new List<ItemDescInfo>();
-
             listItemUserSelected.Add(selectedItem);
             totalCostCal += selectedItem.Cost;            
         }
@@ -103,8 +160,7 @@ namespace Group6Assignment.Main
         /// </summary>
         /// <returns></returns>
         public List<ItemDescInfo> GetAddedItem()
-        {
-
+        {         
             return listItemUserSelected;
         }
 
@@ -145,14 +201,15 @@ namespace Group6Assignment.Main
             int iMaxInvoiceNum = 0;
             int iLineNumber = 1;
             
-            dataAccess = new clsDataAccess();
-            
+            dataAccess = new clsDataAccess();         
+
             //Insert Invoice number and its date into the Invoices table.
             dataAccess.ExecuteNonQuery(clsMainSQL.SQLCreateNewInvoice(date));
 
             //Get max number of Invoice number.
             iMaxInvoiceNum = GetMaxInvoiceNum();
             
+
             for (int i = 0; i < listItemUserSelected.Count; i++)
             {
                 dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(iMaxInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
@@ -163,6 +220,8 @@ namespace Group6Assignment.Main
             CurrentInvoice.InvoiceDate = date;
             CurrentInvoice.TotalCost = CalculateTotal();
         }
+
+
 
 
         public void DeleteItemInList(ItemDescInfo deleteItems)
@@ -178,18 +237,47 @@ namespace Group6Assignment.Main
         /// <summary>
         /// This method edits Invoice items user input.
         /// </summary>
-        public void EditInvoice(int curInvoiceNum)
+        public void EditInvoice(int editInvoiceNum, DateTime editDate)
         {
+            int iLineNumber = 1;
+            dataAccess = new clsDataAccess();
+            DataSet ds = new DataSet();
+           
 
+            //Delete LineItems then rewrite.
+            dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteLineItems(editInvoiceNum));
+           
+            //Update Invoice Date in Invoces table.
+            dataAccess.ExecuteNonQuery(clsMainSQL.SQLEditInvoice(editInvoiceNum, editDate));
+
+            //Rewirte LineItmems.
+            for (int i = 0; i < listItemUserSelected.Count; i++)
+            {
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(editInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
+                iLineNumber++;
+            }
+
+            CurrentInvoice.InvoiceNumber = editInvoiceNum;
+            CurrentInvoice.InvoiceDate = editDate;
+            CurrentInvoice.TotalCost = CalculateTotal();
         }
 
 
         /// <summary>
         /// This method deletes Invoice items user input from database.
         /// </summary>
-        public void DeleteInvoice()
+        public void DeleteInvoice(int deleteInvoiceNum)
         {
-            
+            dataAccess = new clsDataAccess();
+            DataSet ds = new DataSet();
+
+            //Delete LineItems then rewrite.
+            dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteLineItems(deleteInvoiceNum));
+
+            //Update Invoice Date in Invoces table.
+            dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteInvoice(deleteInvoiceNum));
+
+            Reset();
         }
 
 
@@ -200,7 +288,9 @@ namespace Group6Assignment.Main
         public void Reset()
         {
             listItemUserSelected = null;
+            CurrentInvoice = null;
             totalCostCal = 0;
+            
         }
        
 
@@ -226,6 +316,10 @@ namespace Group6Assignment.Main
             /// </summary>
             public decimal TotalCost { get; set; }
 
+            public static implicit operator Invoices(clsMainLogic v)
+            {
+                throw new NotImplementedException();
+            }
         }
 
 

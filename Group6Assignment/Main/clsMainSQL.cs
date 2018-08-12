@@ -54,6 +54,30 @@ namespace Group6Assignment.Main
             
         }
 
+        /// <summary>
+        /// Select data by InvoiceNumber in LineItems table.
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public string SQLGetCurrentInvoiceLineItems(int invoiceNum)
+        {
+            string sSql = "SELECT ID.ItemCode, ItemDesc, Cost " +
+                        "FROM ItemDesc AS ID INNER JOIN LineItems AS LI ON ID.ItemCode = LI.ItemCode " +
+                        "WHERE LI.InvoiceNum = " + invoiceNum;
+
+            return sSql;
+        }
+        
+
+        /// <summary>
+        /// Select data by ItemCode in ItemDesc table.
+        /// </summary>
+        /// <returns></returns>
+        public string SQLGetItemDesc(string itemCode)
+        {
+            return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc WHERE ItemCode ='" + itemCode + "'";
+        }
+
 
         /// <summary>
         /// This method adds line items to an Invoice table
@@ -74,10 +98,10 @@ namespace Group6Assignment.Main
         /// <param name="invoiceDate"></param>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public string SQLEditInvoice(DateTime invoiceDate, int invoiceNum)
+        public string SQLEditInvoice( int invoiceNum, DateTime invoiceDate)
         {
             //return "UPDATE ItemDesc SET = ItemCode ='" + itemCode + "', ItemDesc ='" + itemDesc + "', Cost = " + cost + "WHERE Item;
-            return "UPDATE Invoice SET InvoiceDate =#" + invoiceDate + "# WHERE InvoiceNum = " + invoiceNum;
+            return "UPDATE Invoices SET InvoiceDate =#" + invoiceDate + "# WHERE InvoiceNum = " + invoiceNum;
         }
 
 
@@ -88,7 +112,7 @@ namespace Group6Assignment.Main
         /// <returns></returns>
         public string SQLDeleteLineItems(int invoiceNum)
         {
-            return "DELETE FROM LineItems WHERE InvoiceNum =" + invoiceNum;
+            return "DELETE FROM LineItems WHERE InvoiceNum = " + invoiceNum;
         }
 
 
@@ -97,9 +121,9 @@ namespace Group6Assignment.Main
         /// </summary>
         /// <param name="invoiceNumber"></param>
         /// <returns></returns>
-        public string SQLDeleteInvoice(int invoiceNumber)
+        public string SQLDeleteInvoice(int invoiceNum)
         {
-            return "DELETE FROM Invoices WHERE InvoiceNumber = " + invoiceNumber;
+            return "DELETE FROM Invoices WHERE InvoiceNum = " + invoiceNum;
         }
 
     }
