@@ -30,7 +30,9 @@ namespace Group6Assignment.Search
         /// </summary>
 		public clsSearchSQL()
         {
-            sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString() + "/Invoice.mdb";
+            sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetCurrentDirectory() + "\\Invoice.mdb";
+
+            //sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString() + "/Invoice.mdb";
         }
 
         /// <summary>
