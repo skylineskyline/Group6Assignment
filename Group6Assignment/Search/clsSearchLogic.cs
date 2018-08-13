@@ -25,6 +25,7 @@ namespace Group6Assignment.Search
         /// </summary>
         private int iInvoiceNumber;
 
+       
         /// <summary>
         /// This class handles all of the SQL statements
         /// </summary>

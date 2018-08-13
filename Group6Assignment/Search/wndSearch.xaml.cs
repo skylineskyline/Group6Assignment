@@ -8,19 +8,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Data;
 using Group6Assignment.Main;
 
 namespace Group6Assignment.Search
@@ -51,6 +42,18 @@ namespace Group6Assignment.Search
         /// </summary>
         private string sCharge = null;
 
+
+        ////////////////////////Dongmin added ////////////////////////////////////
+
+        private clsMainLogic.Invoices selectedInvoice;
+
+
+        //////////////////////////////////////////////////////////////////////////
+
+
+
+
+
         /// <summary>
         /// The method will initialize component, AMD update the forms
         /// </summary>
@@ -59,6 +62,13 @@ namespace Group6Assignment.Search
             InitializeComponent();
             clsSearchLogicClass = new clsSearchLogic();
             UpdateForm();
+
+            ////////////////////////Dongmin added ////////////////////////////////////
+
+            btnSelect.IsEnabled = false;
+
+            //////////////////////////////////////////////////////////////////////////
+
         }
 
         /// <summary>
@@ -88,15 +98,37 @@ namespace Group6Assignment.Search
         {
             try
             {
-                string sSelection = dgInvoices.SelectedIndex.ToString();
+                //////// Dongmin added ////////
+                selectedInvoice = new clsMainLogic.Invoices();
+                DateTime invoiceDate = new DateTime();
+                decimal totalCost;
+                //////////////////////////////
+
+                string sSelection = dgInvoices.SelectedIndex.ToString();               
                 int iSelection;
                 Int32.TryParse(sSelection, out iSelection);
 
                 sSelection = clsSearchLogicClass.CurrentGridData.Tables[0].Rows[iSelection][0].ToString();
-                Int32.TryParse(sSelection, out iSelection);
 
+                //////// Dongmin added ////////
+                invoiceDate = DateTime.Parse(clsSearchLogicClass.CurrentGridData.Tables[0].Rows[iSelection][1].ToString());
+                totalCost = (decimal)clsSearchLogicClass.CurrentGridData.Tables[0].Rows[iSelection][2];
+                //////////////////////////////
+
+                Int32.TryParse(sSelection, out iSelection);
                 clsSearchLogicClass.InvoiceNumber = iSelection;
 
+
+                //////// Dongmin added ////////
+                selectedInvoice.InvoiceNumber = iSelection;
+                selectedInvoice.InvoiceDate = invoiceDate;
+                selectedInvoice.TotalCost = totalCost;
+
+                var window = new wndMain(selectedInvoice);
+                window.Show();
+                //////////////////////////////
+
+                //this.Close();
                 this.Hide();
             }
             catch (Exception ex)
@@ -341,39 +373,29 @@ namespace Group6Assignment.Search
         {
             try
             {
-                //Set the variable iInvoiceNumber inside clsSearchLogic to -1
-                clsSearchLogicClass.InvoiceNumber = -1; //returns a -1 to show that no selection was made.
-                this.Hide();
+                if (selectedInvoice == null)
+                {
+                    var window = new wndMain();
+                    window.Show();
+                }
+
+                else
+                {
+                    var window = new wndMain(selectedInvoice);
+                    window.Show();
+                }
+
+                this.Hide();                
             }
             catch (Exception ex)
             {
-                // Top level method to handle the error.
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
 
-        /// <summary>
-        /// This method closes window.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                this.Hide();
-                e.Cancel = true;
-            }
-            catch (Exception ex)
-            {
-                // Top level method to handle the error.
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
+  
 
         /// <summary>
         /// This method handles the top level exceptions
@@ -394,5 +416,59 @@ namespace Group6Assignment.Search
                                              "HandleError Exception: " + ex.Message);
             }
         }
+
+
+
+
+        ////////////////////////////Dongmin added///////////////////////////////////////
+
+
+        /// <summary>
+        /// Event handler to activate Select button when user clicked Invoice in the list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgInvoices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                btnSelect.IsEnabled = true;
+            }
+
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        
+
+
+        ///// <summary>
+        ///// This method closes window.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    try
+        //    {
+
+        //        this.Hide();
+        //        e.Cancel = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Top level method to handle the error.
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
+
+
+        ///////////////////////////////////////////////////////////////////////////////
+
+
     }// end wndSearch
 }

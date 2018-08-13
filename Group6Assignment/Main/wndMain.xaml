@@ -30,7 +30,7 @@
 
         <!-- Invoice Number-->
         <TextBlock HorizontalAlignment="Left" Margin="236,145,0,0" TextWrapping="Wrap" Text="Invoice Number: " VerticalAlignment="Top" Height="27" Width="115" FontSize="15"/>
-        <TextBlock x:Name="TbInvoiceNumber" HorizontalAlignment="Left" Margin="356,145,0,0" TextWrapping="Wrap" Text="TBD" VerticalAlignment="Top" Height="27" Width="35" FontSize="15"/>
+        <TextBlock x:Name="TbInvoiceNumber" HorizontalAlignment="Left" Margin="356,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Width="35" FontSize="15"/>
 
         <!-- Invoice Date-->
         <TextBlock HorizontalAlignment="Left" Margin="417,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Width="95" FontSize="15"><Run Text="Invoice "/><Run Text="Date"/><Run Text=":"/></TextBlock>
@@ -38,18 +38,28 @@
 
         <!-- Select Items -->
         <TextBlock HorizontalAlignment="Left" Margin="236,210,0,0" TextWrapping="Wrap" Text="Items:" VerticalAlignment="Top" Height="27" Width="48" FontSize="15"/>
-        <ComboBox x:Name="CinvoiceList" HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385" SelectionChanged="CinvoiceList_SelectionChanged"/>
+        <ComboBox x:Name="CinvoiceList" HorizontalAlignment="Left" Margin="287,211,0,0" VerticalAlignment="Top" Width="385" SelectionChanged="CinvoiceList_SelectionChanged" FontSize="15" FontFamily="Calibri"/>
 
         <!--Add Item button-->
         <Button x:Name="BaddItem" Content="Add Item" Height="25" VerticalAlignment="Top" Margin="686,210,18,0" FontSize="15" Click="BaddItem_Click"/>
 
 
         <!-- DataGrid for selected item-->
-        <DataGrid HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Item Code" Width="100"/>
-                <DataGridTextColumn Header="Item Description" Width="300"/>
-                <DataGridTextColumn Header="Item Cost" Width="*"/>
+        <DataGrid x:Name="dgDisplaytems" HorizontalAlignment="Left" Height="347" Margin="236,268,0,0" VerticalAlignment="Top" Width="567" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>             
+                
+                <DataGridTextColumn Header="Item Code" Binding="{Binding Path=ItemCode}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Item Description" Binding="{Binding Path=ItemDesc}" Width="300"></DataGridTextColumn>
+                <DataGridTextColumn Header="Item Cost" Binding="{Binding Path=Cost}" Width="*"></DataGridTextColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="bDeleteItemButton"  Click="cDeleteItemInList_Click" ToolTip="Remove the item from Invoce list">X</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 
@@ -60,7 +70,8 @@
 
 
         <!-- Save invoice button-->
-        <Button x:Name="BsaveInvoice" Content="Save Invoice" Height="25" VerticalAlignment="Top" Margin="450,675,254,0" FontSize="15" RenderTransformOrigin="1.291,0.72" IsEnabled="False" Click="BsaveInvoice_Click"/>
+        <Button x:Name="BsaveInvoice" Content="Save Invoice" Height="25" VerticalAlignment="Top" Margin="506,675,198,0" FontSize="15" RenderTransformOrigin="1.291,0.72" IsEnabled="False" Click="BsaveInvoice_Click"/>
+        <Button x:Name="bCancelInvoice" Content="Cancel Invoice" Height="25" VerticalAlignment="Top" Margin="680,675,24,0" FontSize="15" RenderTransformOrigin="1.291,0.72" IsEnabled="False" Click="bCancelInvoice_Click"/>
 
     </Grid>
 </Window>

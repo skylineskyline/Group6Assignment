@@ -258,7 +258,7 @@ namespace Group6Assignment.Items
                         count++;
                     }
                 }
-              
+
                 if (count != 0) //If the item exists in an inventory
                 {
                     List<string> existingInInvoice = GetItemCodeList_LineItems();

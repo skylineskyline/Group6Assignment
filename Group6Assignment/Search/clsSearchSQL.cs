@@ -31,9 +31,8 @@ namespace Group6Assignment.Search
 		public clsSearchSQL()
         {
             sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetCurrentDirectory() + "\\Invoice.mdb";
-
-            //sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).ToString()).ToString() + "/Invoice.mdb";
         }
+
 
         /// <summary>
         /// This method returns all invoices from the DataBase.
@@ -44,7 +43,11 @@ namespace Group6Assignment.Search
         {
             DataSet ds = new DataSet();
 
-            string sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\"  FROM Invoices";
+            string sSQL = "SELECT i.InvoiceNum AS \"Invoice Number\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice date\", SUM(id.cost) AS TotalCharge " +
+                          "FROM ItemDesc id, LineItems li, Invoices i " +
+                          "WHERE i.InvoiceNum = li.InvoiceNum " +
+                          "AND li.ItemCode = id.ItemCode " +
+                          "GROUP BY i.InvoiceNum, i.InvoiceDate; ";
 
             ds = ExecuteSQLStatement(sSQL);
 
@@ -62,45 +65,72 @@ namespace Group6Assignment.Search
         {
             DataSet ds = new DataSet();
 
-            string sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices";
+            string sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice date\", SUM(id.cost) AS TotalCharge " +
+                          "FROM ItemDesc id, LineItems li, Invoices i" +
+                          "WHERE i.InvoiceNum = li.InvoiceNum" +
+                          "AND li.ItemCode = id.ItemCode" +
+                          "GROUP BY i.InvoiceNum, i.InvoiceDate;";
 
 
             if (invoice != -1 && date != null && charge != -1)// if everything was chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE InvoiceNum = " + invoice + " AND " +
-                       "InvoiceDate = #" + date + "# AND TotalCharge = " + charge;
+                sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice date\", SUM(id.cost) AS TotalCharge " +
+                       "FROM ItemDesc id, LineItems li, Invoices i" +
+                       "WHERE i.InvoiceNum = li.InvoiceNum" +
+                       "AND li.ItemCode = id.ItemCode" +
+                       "AND i.InvoiceNum = " + invoice +
+                       "AND InvoiceDate = #" + date +
+                       "# GROUP BY i.InvoiceNum, i.InvoiceDate;" +
+                       "HAVING SUM(id.cost) = " + charge + "; ";
             }
             else if (invoice != -1 && date != null && charge == -1)// if invoice and date were chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE InvoiceNum = " + invoice + " AND " +
-                       "InvoiceDate = #" + date + "#";
+                sSQL = "SELECT i.InvoiceNum, Format([InvoiceDate],'mm/dd/yyyy ') AS \"Invoice date\", Sum(id.cost) AS TotalCharge " +
+                       "FROM ItemDesc AS id, LineItems AS li, Invoices AS i " +
+                       "WHERE(((i.InvoiceNum) =[li].[InvoiceNum]) AND((li.ItemCode) =[id].[ItemCode])) " +
+                       "AND i.InvoiceNum = " + invoice +
+                       "AND InvoiceDate = #" + date +
+                       "# GROUP BY i.InvoiceNum, i.InvoiceDate;";
             }
             else if (invoice != -1 && date == null && charge != -1)// if invoice and charge were chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE InvoiceNum = " + invoice + " AND TotalCharge = " + charge;
+                sSQL = "SELECT i.InvoiceNum, Format([InvoiceDate],'mm/dd/yyyy ') AS \"Invoice date\", Sum(id.cost) AS TotalCharge " +
+                       "FROM ItemDesc AS id, LineItems AS li, Invoices AS i " +
+                       "WHERE(((i.InvoiceNum) =[li].[InvoiceNum]) AND((li.ItemCode) =[id].[ItemCode])) " +
+                       "AND i.InvoiceNum = " + invoice +
+                       " GROUP BY i.InvoiceNum, i.InvoiceDate " +
+                       "HAVING SUM(id.cost) = " + charge + ";";
             }
             else if (invoice == -1 && date != null && charge != -1)// if date and charge were chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE InvoiceDate = #" + date + "# AND TotalCharge = " + charge;
+                sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", SUM(id.cost) AS TotalCharge " +
+                       "FROM ItemDesc id, LineItems li, Invoices i WHERE i.InvoiceNum = li.InvoiceNum " +
+                       "AND li.ItemCode = id.ItemCode " +
+                       "AND InvoiceDate = #" + date +
+                       "# GROUP BY i.InvoiceNum, i.InvoiceDate HAVING SUM(id.cost) = " + charge + ";";
+
             }
             else if (invoice != -1 && date == null && charge == -1)// if invoice was chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE InvoiceNum = " + invoice;
+                sSQL = "SELECT i.InvoiceNum, Format([InvoiceDate],'mm/dd/yyyy ') AS \"Invoice date\", Sum(id.cost) AS TotalCharge " +
+                       "FROM ItemDesc AS id, LineItems AS li, Invoices AS i " +
+                       "WHERE(((i.InvoiceNum) =[li].[InvoiceNum]) AND((li.ItemCode) =[id].[ItemCode])) " +
+                       "AND i.InvoiceNum = " + invoice +
+                       " GROUP BY i.InvoiceNum, i.InvoiceDate;";
             }
             else if (invoice == -1 && date != null && charge == -1)// if Date was chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE InvoiceDate = #" + date + "#";
+                sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", SUM(id.cost) AS TotalCharge " +
+                       "FROM ItemDesc id, LineItems li, Invoices i WHERE i.InvoiceNum = li.InvoiceNum " +
+                       "AND li.ItemCode = id.ItemCode " +
+                       "AND InvoiceDate = #" + date +
+                       "# GROUP BY i.InvoiceNum, i.InvoiceDate;";
             }
             else if (invoice == -1 && date == null && charge != -1)// if Charge was chosen
             {
-                sSQL = "SELECT InvoiceNum AS \"Invoice #\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", format ([TotalCharge], \"Currency\") AS \"Total Charge\" FROM Invoices " +
-                       "WHERE TotalCharge = " + charge;
+                sSQL = "SELECT i.InvoiceNum, Format([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", SUM(id.cost) AS TotalCharge FROM ItemDesc id, LineItems li, Invoices i " +
+                       "WHERE i.InvoiceNum = li.InvoiceNum AND li.ItemCode = id.ItemCode " +
+                       "GROUP BY i.InvoiceNum, i.InvoiceDate HAVING SUM(id.cost) = " + charge + ";";
             }
 
             ds = ExecuteSQLStatement(sSQL);
@@ -143,11 +173,15 @@ namespace Group6Assignment.Search
         public DataSet PopulateTotalChargeCB()
         {
             DataSet ds = new DataSet();
-
-            string sql = "SELECT DISTINCT MAX(format ([TotalCharge], \"Currency\")) FROM Invoices GROUP BY TotalCharge ORDER BY MAX(format ([TotalCharge], \"Currency\"))";
+            string sql = "SELECT Distinct SUM(id.cost) " +
+                          "FROM ItemDesc id, LineItems li, Invoices i " +
+                          "WHERE i.InvoiceNum = li.InvoiceNum " +
+                          "AND li.ItemCode = id.ItemCode " +
+                          "GROUP BY i.InvoiceNum, i.InvoiceDate;";
             ds = ExecuteSQLStatement(sql);
 
             return ds;
+
         }
 
         /// <summary>
@@ -156,9 +190,8 @@ namespace Group6Assignment.Search
         /// the reference parameter iRetVal.
         /// </summary>
         /// <param name="sSQL">The SQL statement to be executed.</param>
-        /// <param name="iRetVal">Reference parameter that returns the number of selected rows.</param>
         /// <returns>Returns a DataSet that contains the data from the SQL statement.</returns>
-        public DataSet ExecuteSQLStatement(string sSQL) // removed the reference int
+        public DataSet ExecuteSQLStatement(string sSQL)
         {
             try
             {
@@ -182,6 +215,7 @@ namespace Group6Assignment.Search
                     }
                 }
 
+                //return the DataSet
                 return ds;
             }
             catch (Exception ex)

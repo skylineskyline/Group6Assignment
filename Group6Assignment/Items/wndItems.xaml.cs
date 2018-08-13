@@ -58,7 +58,7 @@ namespace Group6Assignment.Items
         public wndItems()
         {
             InitializeComponent();
-
+            
             objItemsLogic = new clsItemsLogic();
         }
         #endregion
@@ -250,7 +250,7 @@ namespace Group6Assignment.Items
 
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to add this item?", "Add Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
-                {                  
+                {
                     txtAddItemCode.Text = txtAddItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.AddItem_byRow(txtAddItemCode.Text, txtAddItemDesc.Text, Convert.ToDecimal(txtAddCost.Text));
                 }
@@ -309,7 +309,7 @@ namespace Group6Assignment.Items
 
                 MessageBoxResult userAnswer = MessageBox.Show("Are you sure to edit this item?", "Edit Confirmation", MessageBoxButton.YesNo);
                 if (userAnswer == MessageBoxResult.Yes)
-                {                   
+                {
                     txtEditItemCode.Text = txtEditItemCode.Text.ToUpper(); //Convert itemCode textbox input to upper case.
                     objItemsLogic.EditItem(txtEditItemCode.Text, txtEditItemDesc.Text, Convert.ToDecimal(txtEditCost.Text));
                 }
@@ -372,7 +372,7 @@ namespace Group6Assignment.Items
         ///// </summary>
         ///// <param name="sender"></param>
         ///// <param name="e"></param>
-        //private void ItemsWindow_Closed(object sender, EventArgs e)
+        //private void ItemsWindow_Closed(object sender, System.ComponentModel.CancelEventArgs e)
         //{
         //    try
         //    {
@@ -389,24 +389,24 @@ namespace Group6Assignment.Items
         //}
 
 
-        /// <summary>
-        /// It will be triggered when the Items window is closed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                var window = new Main.wndMain();
-                window.Show();
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
+        ///// <summary>
+        ///// It will be triggered when the Items window is closed.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    try
+        //    {
+        //        var window = new Main.wndMain();
+        //        window.Show();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+        //            MethodInfo.GetCurrentMethod().Name, ex.Message);
+        //    }
+        //}
         #endregion
 
         #region Methods
@@ -432,7 +432,7 @@ namespace Group6Assignment.Items
         /// Clear every textbox in an Edit Grid
         /// </summary>
         public void RefreshEdit()
-        {          
+        {
             try
             {
                 txtEditItemCode.Clear();

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Group6Assignment.Items"
-        mc:Ignorable="d"
-        Title="wndItems" Height="540" Width="620" Loaded="wndItemsBinding_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen"> 
+        mc:Ignorable="d"       
+        Title="wndItems" Height="540" Width="620" Loaded="wndItemsBinding_Loaded" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
