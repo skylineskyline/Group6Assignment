@@ -122,9 +122,13 @@ namespace Group6Assignment.Main
         {
             try
             {
-                var windowSearch = new wndSearch();
-                openSearch.Show();
-                this.Close();
+                this.Hide();
+                openSearch = new wndSearch();
+                openSearch.ShowDialog();
+                this.Show();
+                //var windowSearch = new wndSearch();
+                //openSearch.Show();
+                //this.Close();
             }
             catch (Exception)
             {
