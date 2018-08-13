@@ -128,7 +128,7 @@ namespace Group6Assignment.Search
             }
             else if (invoice == -1 && date == null && charge != -1)// if Charge was chosen
             {
-                sSQL = "SELECT i.InvoiceNum, Format([InvoiceDate], 'mm/dd/yyyy '), SUM(id.cost) AS TotalCharge FROM ItemDesc id, LineItems li, Invoices i " +
+                sSQL = "SELECT i.InvoiceNum, Format([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice Date\", SUM(id.cost) AS TotalCharge FROM ItemDesc id, LineItems li, Invoices i " +
                        "WHERE i.InvoiceNum = li.InvoiceNum AND li.ItemCode = id.ItemCode " +
                        "GROUP BY i.InvoiceNum, i.InvoiceDate HAVING SUM(id.cost) = "  + charge + ";";
             }
