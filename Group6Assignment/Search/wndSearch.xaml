@@ -14,7 +14,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid Margin="0,0,2,-1">
-        <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="235" Margin="30,130,0,0" VerticalAlignment="Top" Width="569" Background="White" CanUserAddRows="False" FontSize="16">
+        <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="235" Margin="30,130,0,0" VerticalAlignment="Top" Width="372" Background="White" CanUserAddRows="False" FontSize="16">
             <DataGrid.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
