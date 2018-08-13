@@ -51,16 +51,6 @@ namespace Group6Assignment.Search
         /// </summary>
         private string sCharge = null;
 
-
-        ////////////////////////Dongmin added ////////////////////////////////////
-
-        private clsMainLogic.Invoices selectedInvoice;
-                 
-
-        //////////////////////////////////////////////////////////////////////////
-
-
-
         /// <summary>
         /// The method will initialize component, AMD update the forms
         /// </summary>
@@ -69,13 +59,6 @@ namespace Group6Assignment.Search
             InitializeComponent();
             clsSearchLogicClass = new clsSearchLogic();
             UpdateForm();
-
-            ////////////////////////Dongmin added ////////////////////////////////////
-
-            selectedInvoice = null;
-            btnSelect.IsEnabled = false;
-
-            //////////////////////////////////////////////////////////////////////////
         }
 
         /// <summary>
@@ -368,6 +351,25 @@ namespace Group6Assignment.Search
         }
 
 
+        /// <summary>
+        /// This method closes window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                var window = new Main.wndMain();
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                // Top level method to handle the error.
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
 
 
         /// <summary>
@@ -389,44 +391,5 @@ namespace Group6Assignment.Search
                                              "HandleError Exception: " + ex.Message);
             }
         }
-
-
-
-        
-        ////////////////////////////Dongmin added///////////////////////////////////////
-        
-
-
-        private void dgInvoices_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            btnSelect.IsEnabled = true;
-
-            selectedInvoice = (clsMainLogic.Invoices)dgInvoices.SelectedItem;
-        }
-
-
-
-        /// <summary>
-        /// This method closes window.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                var window = new wndMain(selectedInvoice);
-                window.Show();
-            }
-            catch (Exception ex)
-            {
-                // Top level method to handle the error.
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-
-        /////////////////////////////////////////////////////////////////////////////////
     }// end wndSearch
 }
