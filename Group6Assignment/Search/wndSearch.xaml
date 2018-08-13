@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Group6Assignment.Search"        
         mc:Ignorable="d"        
-        Title="Search Invoices" Height="760" Width="830" Closing="Window_Closing">
+        Title="Search Invoices" Height="560" Width="650" Closing="Window_Closing">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="Black" Offset="0"/>
@@ -13,8 +13,8 @@
             <GradientStop Color="#FF8F8F8F" Offset="0.004"/>
         </LinearGradientBrush>
     </Window.Background>
-    <Grid>
-        <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="343" Margin="30,160,0,0" VerticalAlignment="Top" Width="762" Background="White" CanUserAddRows="False">
+    <Grid Margin="0,0,2,-1">
+        <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="235" Margin="30,130,0,0" VerticalAlignment="Top" Width="569" Background="White" CanUserAddRows="False" FontSize="16">
             <DataGrid.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -22,15 +22,15 @@
                 </LinearGradientBrush>
             </DataGrid.BorderBrush>
         </DataGrid>
-        <Button x:Name="btnSelect" Content="Select" HorizontalAlignment="Left" Margin="73,594,0,0" VerticalAlignment="Top" Width="120" Click="btnSelect_Click" Height="38" FontSize="24"/>
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="604,594,0,0" VerticalAlignment="Top" Width="120" Click="btnCancel_Click" Height="38" FontSize="24"/>
-        <Label x:Name="lblInfo" Content="Please Select an Invoice. You may narrow your &#xD;&#xA;search using the drop-down boxes above." HorizontalAlignment="Left" Margin="162,503,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="516" Height="91" FontSize="24"/>
-        <ComboBox x:Name="cbInvoiceNumber" HorizontalAlignment="Left" Margin="73,90,0,0" VerticalAlignment="Top" Width="182" SelectionChanged="cbInvoiceNumber_SelectionChanged" Height="50" FontSize="14"/>
-        <Label x:Name="lblInvoiceNumber" Content="Invoice Number" HorizontalAlignment="Left" Margin="73,48,0,0" VerticalAlignment="Top" Foreground="Black" Width="182" FontSize="24"/>
-        <Label x:Name="lblInvoiceDate" Content="Invoice Date" HorizontalAlignment="Left" Margin="326,48,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="24"/>
-        <Label x:Name="lblTotalCharge" Content="Total Charge" HorizontalAlignment="Left" Margin="570,48,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="24"/>
-        <ComboBox x:Name="cbInvoiceDate" HorizontalAlignment="Left" Margin="326,90,0,0" VerticalAlignment="Top" Width="156" SelectionChanged="cbInvoiceDate_SelectionChanged" Height="50" FontSize="14"/>
-        <ComboBox x:Name="cbTotalCharge" HorizontalAlignment="Left" Margin="560,90,0,0" VerticalAlignment="Top" Width="164" SelectionChanged="cbTotalCharge_SelectionChanged" Height="50" FontSize="14"/>
-        <Button x:Name="btnClear" Content="Clear Selection" HorizontalAlignment="Left" Margin="314,594,0,0" VerticalAlignment="Top" Width="182" Click="btnClear_Click" Height="38" FontSize="24"/>
+        <Button x:Name="btnSelect" Content="Select" HorizontalAlignment="Left" Margin="11,475,0,0" VerticalAlignment="Top" Width="120" Click="btnSelect_Click" Height="38" FontSize="24"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="504,475,0,0" VerticalAlignment="Top" Width="120" Click="btnCancel_Click" Height="38" FontSize="24"/>
+        <Label x:Name="lblInfo" Content="Please Select an Invoice. You may narrow your &#xD;&#xA;search using the drop-down boxes above." HorizontalAlignment="Left" Margin="64,365,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="516" Height="91" FontSize="24"/>
+        <ComboBox x:Name="cbInvoiceNumber" HorizontalAlignment="Left" Margin="11,54,0,0" VerticalAlignment="Top" Width="182" SelectionChanged="cbInvoiceNumber_SelectionChanged" Height="50" FontSize="14"/>
+        <Label x:Name="lblInvoiceNumber" Content="Invoice Number" HorizontalAlignment="Left" Margin="30,17,0,0" VerticalAlignment="Top" Foreground="Black" Width="149" FontSize="18" Height="37"/>
+        <Label x:Name="lblInvoiceDate" Content="Invoice Date" HorizontalAlignment="Left" Margin="246,17,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="18"/>
+        <Label x:Name="lblTotalCharge" Content="Total Charge" HorizontalAlignment="Left" Margin="488,17,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="18"/>
+        <ComboBox x:Name="cbInvoiceDate" HorizontalAlignment="Left" Margin="246,56,0,0" VerticalAlignment="Top" Width="156" SelectionChanged="cbInvoiceDate_SelectionChanged" Height="50" FontSize="14"/>
+        <ComboBox x:Name="cbTotalCharge" HorizontalAlignment="Left" Margin="460,56,0,0" VerticalAlignment="Top" Width="164" SelectionChanged="cbTotalCharge_SelectionChanged" Height="50" FontSize="14"/>
+        <Button x:Name="btnClear" Content="Clear Selection" HorizontalAlignment="Left" Margin="207,475,0,0" VerticalAlignment="Top" Width="182" Click="btnClear_Click" Height="38" FontSize="24"/>
     </Grid>
 </Window>

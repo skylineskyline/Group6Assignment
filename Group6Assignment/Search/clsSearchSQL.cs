@@ -43,7 +43,7 @@ namespace Group6Assignment.Search
         {
             DataSet ds = new DataSet();
 
-            string sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy '), SUM(id.cost) AS TotalCharge " +
+            string sSQL = "SELECT i.InvoiceNum AS \"Invoice Number\", Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice date\", SUM(id.cost) AS TotalCharge " +
                           "FROM ItemDesc id, LineItems li, Invoices i " +
                           "WHERE i.InvoiceNum = li.InvoiceNum " +
                           "AND li.ItemCode = id.ItemCode " +
@@ -65,7 +65,7 @@ namespace Group6Assignment.Search
         {
             DataSet ds = new DataSet();
 
-            string sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy '), SUM(id.cost) AS TotalCharge " +
+            string sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice date\", SUM(id.cost) AS TotalCharge " +
                           "FROM ItemDesc id, LineItems li, Invoices i" +
                           "WHERE i.InvoiceNum = li.InvoiceNum" +
                           "AND li.ItemCode = id.ItemCode" +
@@ -74,7 +74,7 @@ namespace Group6Assignment.Search
 
             if (invoice != -1 && date != null && charge != -1)// if everything was chosen
             {
-                sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy '), SUM(id.cost) AS TotalCharge " +
+                sSQL = "SELECT i.InvoiceNum, Format ([InvoiceDate], 'mm/dd/yyyy ') AS \"Invoice date\", SUM(id.cost) AS TotalCharge " +
                        "FROM ItemDesc id, LineItems li, Invoices i" +
                        "WHERE i.InvoiceNum = li.InvoiceNum" +
                        "AND li.ItemCode = id.ItemCode" +
