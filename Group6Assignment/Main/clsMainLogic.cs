@@ -315,11 +315,7 @@ namespace Group6Assignment.Main
             /// Total cost of the Invoice.
             /// </summary>
             public decimal TotalCost { get; set; }
-
-            public static implicit operator Invoices(clsMainLogic v)
-            {
-                throw new NotImplementedException();
-            }
+          
         }
 
 

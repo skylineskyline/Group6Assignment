@@ -84,6 +84,13 @@ namespace Group6Assignment.Main
         }
 
 
+        public wndMain(clsMainLogic.Invoices fromSelectedInvoice)
+        {
+            currentInvoice = fromSelectedInvoice;
+            LoadInvocie();
+        }
+
+
         /// <summary>
         /// Event handler method for open update(edit) invoice window.
         /// </summary>
