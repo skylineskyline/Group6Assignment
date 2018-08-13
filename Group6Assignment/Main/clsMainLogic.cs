@@ -11,19 +11,23 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System.Windows;
 
 namespace Group6Assignment.Main
 {
     public class clsMainLogic
     {
 
+        #region Class field
         /// <summary>
-        /// Variable to manage SQL.
+        /// Variable to hold clsMainSQL class.
         /// </summary>
         private clsMainSQL clsMainSQL;
 
-        //private ItemDescInfo itemDescInfo;
 
+        /// <summary>
+        /// Variable to hold clsDataAccess class.
+        /// </summary>
         private clsDataAccess dataAccess;
 
 
@@ -33,8 +37,7 @@ namespace Group6Assignment.Main
         private List<ItemDescInfo> listItemUserSelected; 
 
 
-        private List<LineItmes> listLineItmes;
-
+       
         /// <summary>
         /// Variable to hold total cost.
         /// </summary>
@@ -46,7 +49,10 @@ namespace Group6Assignment.Main
         /// </summary>
         public Invoices CurrentInvoice { get; set; }
 
+        #endregion
 
+
+        #region Constructor
         /// <summary>
         /// Constructor
         /// </summary>
@@ -55,59 +61,68 @@ namespace Group6Assignment.Main
             
             try
             {
-                clsMainSQL = new clsMainSQL();            
-                
+                clsMainSQL = new clsMainSQL();
+                CurrentInvoice = new Invoices();
+
                 //If newInvoice is null, creat the new invoice
                 if (newInvoice == null)
-                {
-                    CurrentInvoice = new Invoices();
+                {                   
                     //Greate the new invoice's list.
                     listItemUserSelected = new List<ItemDescInfo>();
                 }
 
                 else
-                {
-                    CurrentInvoice = new Invoices();                    
+                {                
                     CurrentInvoice.InvoiceNumber = newInvoice.InvoiceNumber;
                     CurrentInvoice.InvoiceDate = newInvoice.InvoiceDate;
+                    CurrentInvoice.TotalCost = newInvoice.TotalCost;
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
+        #endregion
+
+
+        #region Methods
 
         /// <summary>
         /// This method gets all records from ItemDesc table for showing up the item list in item combo box.
         /// </summary>
         public List<ItemDescInfo> GetAllItemDesc()
         {
-            dataAccess = new clsDataAccess();            
-            DataSet ds = new DataSet();
-            ItemDescInfo itemDescInfo;
-            int iRet = 0;
-
-            ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetAllItemDesc(), ref iRet);
-
-            List<ItemDescInfo> itemDescInfoList = new List<ItemDescInfo>();
-
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            try
             {
-                itemDescInfo = new ItemDescInfo();
+                dataAccess = new clsDataAccess();
+                DataSet ds = new DataSet();
+                ItemDescInfo itemDescInfo;
+                int iRet = 0;
 
-                itemDescInfo.ItemCode = ds.Tables[0].Rows[i][0].ToString();
-                itemDescInfo.ItemDesc = ds.Tables[0].Rows[i][1].ToString();
-                itemDescInfo.Cost = (decimal)ds.Tables[0].Rows[i][2];
-               
-                itemDescInfoList.Add(itemDescInfo);               
+                ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetAllItemDesc(), ref iRet);
+
+                List<ItemDescInfo> itemDescInfoList = new List<ItemDescInfo>();
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    itemDescInfo = new ItemDescInfo();
+
+                    itemDescInfo.ItemCode = ds.Tables[0].Rows[i][0].ToString();
+                    itemDescInfo.ItemDesc = ds.Tables[0].Rows[i][1].ToString();
+                    itemDescInfo.Cost = (decimal)ds.Tables[0].Rows[i][2];
+
+                    itemDescInfoList.Add(itemDescInfo);
+                }
+
+                return itemDescInfoList;
             }
-
-            return itemDescInfoList;
-
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
 
@@ -117,30 +132,39 @@ namespace Group6Assignment.Main
         /// </summary>
         public void GetLineItmes(int invoiceNum)
         {
-            //listLineItmes = new List<LineItmes>();            
-            listItemUserSelected = new List<ItemDescInfo>();
-            
-            dataAccess = new clsDataAccess();
-            DataSet ds = new DataSet();
-            int iRet = 0;
-
-            ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetCurrentInvoiceLineItems(invoiceNum), ref iRet);
-            
-            foreach (DataRow datas in ds.Tables[0].Rows)
+            try
             {
-                listItemUserSelected.Add(new ItemDescInfo()
+                //listLineItmes = new List<LineItmes>();            
+                listItemUserSelected = new List<ItemDescInfo>();
+
+                dataAccess = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRet = 0;
+
+                ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetCurrentInvoiceLineItems(invoiceNum), ref iRet);
+
+                foreach (DataRow datas in ds.Tables[0].Rows)
                 {
-                    ItemCode = (string)datas[0],
-                    ItemDesc = (string)datas[1],
-                    Cost = (decimal)datas[2]
-                });
-            }
+                    listItemUserSelected.Add(new ItemDescInfo()
+                    {
+                        ItemCode = (string)datas[0],
+                        ItemDesc = (string)datas[1],
+                        Cost = (decimal)datas[2]
+                    });
+                }
 
-            totalCostCal = 0;
-            foreach (var cost in listItemUserSelected)
-            {
-                totalCostCal += cost.Cost;
+                totalCostCal = 0;
+                foreach (var cost in listItemUserSelected)
+                {
+                    totalCostCal += cost.Cost;
+                }
+
             }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
 
 
@@ -149,8 +173,16 @@ namespace Group6Assignment.Main
         /// </summary>
         public void AddItemToInvoice(ItemDescInfo selectedItem)
         {
-            listItemUserSelected.Add(selectedItem);
-            totalCostCal += selectedItem.Cost;            
+            try
+            {
+                listItemUserSelected.Add(selectedItem);
+                totalCostCal += selectedItem.Cost;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+                   
         }
 
 
@@ -160,8 +192,15 @@ namespace Group6Assignment.Main
         /// </summary>
         /// <returns></returns>
         public List<ItemDescInfo> GetAddedItem()
-        {         
-            return listItemUserSelected;
+        {
+            try
+            {
+                return listItemUserSelected;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
 
@@ -170,7 +209,15 @@ namespace Group6Assignment.Main
         /// </summary>
         public decimal CalculateTotal()
         {
-            return totalCostCal;
+            try
+            {
+                return totalCostCal;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
 
 
@@ -180,16 +227,23 @@ namespace Group6Assignment.Main
         /// <returns></returns>
         public int GetMaxInvoiceNum()
         {
-            int iMaxInvoiceNum = 0;
-            dataAccess = new clsDataAccess();
-            DataSet ds = new DataSet();
-            int iRet = 0;
+            try
+            {
+                int iMaxInvoiceNum = 0;
+                dataAccess = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRet = 0;
 
-            //Get max number(lastest Invoice number) of Invoice Number from Invoices table
-            ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetMaxInvoiceNumber(), ref iRet);
-            iMaxInvoiceNum = (int)ds.Tables[0].Rows[0][0];
+                //Get max number(lastest Invoice number) of Invoice Number from Invoices table
+                ds = dataAccess.ExecuteSQLStatement(clsMainSQL.SQLGetMaxInvoiceNumber(), ref iRet);
+                iMaxInvoiceNum = (int)ds.Tables[0].Rows[0][0];
 
-            return iMaxInvoiceNum;
+                return iMaxInvoiceNum;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }            
         }
 
 
@@ -198,27 +252,35 @@ namespace Group6Assignment.Main
         /// </summary>
         public void SaveInvoice(DateTime date)
         {
-            int iMaxInvoiceNum = 0;
-            int iLineNumber = 1;
-            
-            dataAccess = new clsDataAccess();         
-
-            //Insert Invoice number and its date into the Invoices table.
-            dataAccess.ExecuteNonQuery(clsMainSQL.SQLCreateNewInvoice(date));
-
-            //Get max number of Invoice number.
-            iMaxInvoiceNum = GetMaxInvoiceNum();
-            
-
-            for (int i = 0; i < listItemUserSelected.Count; i++)
+            try
             {
-                dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(iMaxInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
-                iLineNumber++;
+                int iMaxInvoiceNum = 0;
+                int iLineNumber = 1;
+
+                dataAccess = new clsDataAccess();
+
+                //Insert Invoice number and its date into the Invoices table.
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLCreateNewInvoice(date));
+
+                //Get max number of Invoice number.
+                iMaxInvoiceNum = GetMaxInvoiceNum();
+
+
+                for (int i = 0; i < listItemUserSelected.Count; i++)
+                {
+                    dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(iMaxInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
+                    iLineNumber++;
+                }
+
+                CurrentInvoice.InvoiceNumber = iMaxInvoiceNum;
+                CurrentInvoice.InvoiceDate = date;
+                CurrentInvoice.TotalCost = CalculateTotal();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
 
-            CurrentInvoice.InvoiceNumber = iMaxInvoiceNum;
-            CurrentInvoice.InvoiceDate = date;
-            CurrentInvoice.TotalCost = CalculateTotal();
         }
 
 
@@ -226,8 +288,16 @@ namespace Group6Assignment.Main
 
         public void DeleteItemInList(ItemDescInfo deleteItems)
         {
-            listItemUserSelected.Remove(deleteItems);
-            totalCostCal -= deleteItems.Cost;
+            try
+            {
+                listItemUserSelected.Remove(deleteItems);
+                totalCostCal -= deleteItems.Cost;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
 
 
@@ -239,27 +309,35 @@ namespace Group6Assignment.Main
         /// </summary>
         public void EditInvoice(int editInvoiceNum, DateTime editDate)
         {
-            int iLineNumber = 1;
-            dataAccess = new clsDataAccess();
-            DataSet ds = new DataSet();
-           
-
-            //Delete LineItems then rewrite.
-            dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteLineItems(editInvoiceNum));
-           
-            //Update Invoice Date in Invoces table.
-            dataAccess.ExecuteNonQuery(clsMainSQL.SQLEditInvoice(editInvoiceNum, editDate));
-
-            //Rewirte LineItmems.
-            for (int i = 0; i < listItemUserSelected.Count; i++)
+            try
             {
-                dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(editInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
-                iLineNumber++;
-            }
+                int iLineNumber = 1;
+                dataAccess = new clsDataAccess();
+                DataSet ds = new DataSet();
 
-            CurrentInvoice.InvoiceNumber = editInvoiceNum;
-            CurrentInvoice.InvoiceDate = editDate;
-            CurrentInvoice.TotalCost = CalculateTotal();
+
+                //Delete LineItems then rewrite.
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteLineItems(editInvoiceNum));
+
+                //Update Invoice Date in Invoces table.
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLEditInvoice(editInvoiceNum, editDate));
+
+                //Rewirte LineItmems.
+                for (int i = 0; i < listItemUserSelected.Count; i++)
+                {
+                    dataAccess.ExecuteNonQuery(clsMainSQL.SQLInsertLineItmes(editInvoiceNum, iLineNumber, listItemUserSelected[i].ItemCode));
+                    iLineNumber++;
+                }
+
+                CurrentInvoice.InvoiceNumber = editInvoiceNum;
+                CurrentInvoice.InvoiceDate = editDate;
+                CurrentInvoice.TotalCost = CalculateTotal();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
 
 
@@ -268,16 +346,24 @@ namespace Group6Assignment.Main
         /// </summary>
         public void DeleteInvoice(int deleteInvoiceNum)
         {
-            dataAccess = new clsDataAccess();
-            DataSet ds = new DataSet();
+            try
+            {
+                dataAccess = new clsDataAccess();
+                DataSet ds = new DataSet();
 
-            //Delete LineItems then rewrite.
-            dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteLineItems(deleteInvoiceNum));
+                //Delete LineItems then rewrite.
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteLineItems(deleteInvoiceNum));
 
-            //Update Invoice Date in Invoces table.
-            dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteInvoice(deleteInvoiceNum));
+                //Update Invoice Date in Invoces table.
+                dataAccess.ExecuteNonQuery(clsMainSQL.SQLDeleteInvoice(deleteInvoiceNum));
 
-            Reset();
+                Reset();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
 
 
@@ -287,14 +373,24 @@ namespace Group6Assignment.Main
         /// </summary>
         public void Reset()
         {
-            listItemUserSelected = null;
-            CurrentInvoice = null;
-            totalCostCal = 0;
+            try
+            {
+                listItemUserSelected = null;
+                CurrentInvoice = null;
+                totalCostCal = 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
             
         }
-       
+
+        #endregion
 
 
+
+        #region Inner Class
         /// <summary>
         /// This class stores Invoices info from database. 
         /// </summary>
@@ -370,6 +466,34 @@ namespace Group6Assignment.Main
             /// </summary>
             public string ItemCode { get; set; }
         }
+
+        #endregion
+
+
+
+
+        #region Event Handler
+
+        /// <summary>
+        /// Handle the error.
+        /// </summary>
+        /// <param name="sClass">The class in which the error occurred in.</param>
+        /// <param name="sMethod">The method in which the error occurred in.</param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                //Would write to a file or database here.
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
+                                             "HandleError Exception: " + ex.Message);
+            }
+        }
+
+    #endregion
 
     }
 }
